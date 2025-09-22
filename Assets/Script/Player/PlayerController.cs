@@ -74,7 +74,6 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
 
         if (this.HP <= 0)
         {
-            Debug.Log("Player die");
             PoolingManager.Despawn(this.gameObject);
         }
     }
