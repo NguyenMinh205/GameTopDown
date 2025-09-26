@@ -10,8 +10,6 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
     [SerializeField] private float speedRotate;
 
     private Rigidbody2D playerRB;
-    private float horizontal;
-    private float vertical;
 
     public void Init()
     {
@@ -23,41 +21,29 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
         playerRB = GetComponent<Rigidbody2D>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
-
-        Move();
-        Rotate();
-    }
-
-    private void Move()
-    {
-        if (vertical > 0)
+        if (Input.GetKey(KeyCode.A))
         {
-            this.playerRB.velocity = this.transform.up * -speed;
+            this.transform.Rotate(new Vector3(0, 0, speedRotate * Time.deltaTime));
         } 
-        else if (vertical < 0)
-        {
-            this.playerRB.velocity = this.transform.up * speed;
-        } 
-        else
-        {
-            this.playerRB.velocity = Vector2.zero;
-        }    
-    }   
-    
-    private void Rotate()
-    {
-        if (horizontal > 0)
+        else if (Input.GetKey(KeyCode.D))
         {
             this.transform.Rotate(new Vector3(0, 0, -speedRotate * Time.deltaTime));
         }
-        else if (horizontal < 0)
+
+        if (Input.GetKey(KeyCode.W))
         {
-            this.transform.Rotate(new Vector3(0, 0, speedRotate * Time.deltaTime));
+            this.playerRB.velocity = this.transform.up * speed;
         }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            this.playerRB.velocity = this.transform.up * -speed;
+        }
+        else
+        {
+            this.playerRB.velocity = Vector2.zero;
+        } 
     }
 
     public void GetHit(float dmg)

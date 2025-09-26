@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IGetHit
 {
-    private float HP; //Máu của enemy
-    private float armor; //Giáp của enemy
-    //[SerializeField] private float _detectTargetRadius; //Phạm vi phát hiện player
+    private float HP; 
+    private float armor;
     private Rigidbody2D rb;
     private Vector2 _movement;
 
@@ -20,27 +19,15 @@ public class EnemyController : MonoBehaviour, IGetHit
         this.armor = armor;
     }    
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         _player = PlayerController.Instance.transform;
-        //_player = PlayerController.Instance.transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
         FollowPlayer();
-        //Collider2D[] colliders = Physics2D.OverlapCircleAll(this.transform.position, _detectTargetRadius, _playerMask);
-        //foreach (Collider2D collider in colliders)
-        //{
-        //    _player = collider.transform;
-        //}
-        //if (DetectObstacle())
-        //{
-        //    _player = null;
-        //}     
     }
 
     private void FixedUpdate()
@@ -48,23 +35,6 @@ public class EnemyController : MonoBehaviour, IGetHit
         this.rb.velocity = _movement * speed;
     }
 
-    //bool DetectObstacle()
-    //{
-    //    if (_player == null)
-    //    {
-    //        return true;
-    //    }
-
-    //    Vector2 target = _player.position - this.transform.position;
-    //    RaycastHit2D hit = Physics2D.Raycast(this.transform.position, target, target.magnitude);
-
-    //    if (hit.collider == null)
-    //        return false;
-    //    if (hit.collider.CompareTag("Player"))
-    //        return false;
-
-    //    return true;
-    //}    
     void FollowPlayer()
     {
         if (_player == null)
@@ -77,10 +47,6 @@ public class EnemyController : MonoBehaviour, IGetHit
         {
             this._movement = (_player.position - this.transform.position).normalized;
             Rotate();
-            //if (Vector2.Distance(_player.position, this.transform.position) > _detectTargetRadius)
-            //{
-            //    _player = null;
-            //}
         }
     }
 
