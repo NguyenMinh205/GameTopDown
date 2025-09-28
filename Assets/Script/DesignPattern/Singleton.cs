@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Singleton <T> : MonoBehaviour where T : MonoBehaviour 
+public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    public static T instance;
-    public static bool dontDestroyOnLoad = true;
+    private static T instance;
+    private static bool dontDestroyOnLoad;
     public static T Instance
     {
         get
@@ -15,37 +17,34 @@ public class Singleton <T> : MonoBehaviour where T : MonoBehaviour
                 instance = FindObjectOfType<T>(true);
                 if (instance == null)
                 {
-                    GameObject singletonObject = new GameObject();
-                    instance = singletonObject.AddComponent<T>();
-                    singletonObject.name = typeof(T).Name + "-singleton";
+                    GameObject singleton = new GameObject();
+                    instance = singleton.AddComponent<T>();
+                    singleton.name = typeof(T).Name;
                     if (dontDestroyOnLoad)
                     {
-                        DontDestroyOnLoad(singletonObject);
+                        DontDestroyOnLoad(singleton);
                     }
-                }    
-            }    
+                }
+            }
             return instance;
         }
-
     }
-
-    public static void KeepALive(bool keepAlive)
+    protected virtual void KeepActive(bool enable)
     {
-        dontDestroyOnLoad = keepAlive;
+        dontDestroyOnLoad = enable;
     }
-
-    private void Awake()
+    protected virtual void Awake()
     {
-        if (instance != null && this.GetInstanceID() != instance.GetInstanceID())
+        if (instance != null && instance.GetInstanceID() != GetInstanceID())
         {
             Destroy(this);
             return;
         }
-
         instance = (T)(MonoBehaviour)this;
+
         if (dontDestroyOnLoad)
         {
-            DontDestroyOnLoad(instance);
-        }    
+            DontDestroyOnLoad(this);
+        }
     }
 }

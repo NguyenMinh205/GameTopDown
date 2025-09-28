@@ -10,7 +10,7 @@ public class LoadScene : MonoBehaviour
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject mainScreen;
 
-    [SerializeField] private Slider loadingBtn;
+    [SerializeField] private Slider loadingSlider;
     [SerializeField] private float loadDelay = 1f;
     [SerializeField] private TextMeshProUGUI loadingTxt;
 
@@ -31,7 +31,7 @@ public class LoadScene : MonoBehaviour
         while (!asyncOperation.isDone)
         {
             float progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
-            loadingBtn.value = progress;
+            loadingSlider.value = progress;
             loadingTxt.text = $"Loading...{Mathf.Floor(progress * 100)}%";
 
             if (asyncOperation.progress >= 1f - 0.001f)

@@ -1787,6 +1787,10 @@ PrefabInstance:
       propertyPath: loadingScreen
       value: 
       objectReference: {fileID: 1581510800}
+    - target: {fileID: 8060989659282095967, guid: cb88abf890679904baff01ecaa8c2cd1, type: 3}
+      propertyPath: loadingSlider
+      value: 
+      objectReference: {fileID: 1204422429}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
