@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using UnityEngine.UI;
 public class UIShop : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI coinText;
+    public TextMeshProUGUI CoinText => coinText;
 
     [Header("Buff 1 Info")]
     [SerializeField] private TextMeshProUGUI numOfBuff1;
@@ -16,7 +18,7 @@ public class UIShop : MonoBehaviour
     [SerializeField] private TextMeshProUGUI priceBuff1;
     [SerializeField] private Image iconBuff1;
     [SerializeField] private Button buyBuff1Btn;
-    private const int buff1Price = 100;
+    private int buff1Price = 100;
 
     [Header("Buff 2 Info")]
     [SerializeField] private TextMeshProUGUI numOfBuff2;
@@ -25,7 +27,7 @@ public class UIShop : MonoBehaviour
     [SerializeField] private TextMeshProUGUI priceBuff2;
     [SerializeField] private Image iconBuff2;
     [SerializeField] private Button buyBuff2Btn;
-    private const int buff2Price = 200;
+    private int buff2Price = 200;
 
     [Header("Buff 3 Info")]
     [SerializeField] private TextMeshProUGUI numOfBuff3;
@@ -34,17 +36,44 @@ public class UIShop : MonoBehaviour
     [SerializeField] private TextMeshProUGUI priceBuff3;
     [SerializeField] private Image iconBuff3;
     [SerializeField] private Button buyBuff3Btn;
-    private const int buff3Price = 300;
+    private int buff3Price = 300;
 
-    private List<BuffSO> buffList = new List<BuffSO>();
+    private readonly Dictionary<BuffType, BuffSO> _buffMap = new Dictionary<BuffType, BuffSO>();
+
     private void Start()
     {
-        if (buyBuff1Btn != null)
-            buyBuff1Btn.onClick.AddListener(PurchaseBuff1);
-        if (buyBuff2Btn != null)
-            buyBuff2Btn.onClick.AddListener(PurchaseBuff2);
-        if (buyBuff3Btn != null)
-            buyBuff3Btn.onClick.AddListener(PurchaseBuff3);
+        BuffSO[] all = Resources.LoadAll<BuffSO>("BuffSO");
+        for (int i = 0; i < all.Length; i++)
+        {
+            BuffSO buff = all[i];
+            _buffMap[buff.id] = buff;
+        }
+
+        if (_buffMap.TryGetValue(BuffType.Buff1, out BuffSO b1))
+        {
+            if (iconBuff1) iconBuff1.sprite = b1.icon;
+            if (nameBuff1) nameBuff1.text = b1.buffName;
+            if (descriptionBuff1) descriptionBuff1.text = b1.description;
+            if (priceBuff1) priceBuff1.text = b1.price.ToString();
+        }
+        if (_buffMap.TryGetValue(BuffType.Buff2, out BuffSO b2))
+        {
+            if (iconBuff2) iconBuff2.sprite = b2.icon;
+            if (nameBuff2) nameBuff2.text = b2.buffName;
+            if (descriptionBuff2) descriptionBuff2.text = b2.description;
+            if (priceBuff2) priceBuff2.text = b2.price.ToString();
+        }
+        if (_buffMap.TryGetValue(BuffType.Buff3, out BuffSO b3))
+        {
+            if (iconBuff3) iconBuff3.sprite = b3.icon;
+            if (nameBuff3) nameBuff3.text = b3.buffName;
+            if (descriptionBuff3) descriptionBuff3.text = b3.description;
+            if (priceBuff3) priceBuff3.text = b3.price.ToString();
+        }
+
+        if (buyBuff1Btn) buyBuff1Btn.onClick.AddListener(() => Purchase(buff1Price, OnBuyBuff1Success, numOfBuff1));
+        if (buyBuff2Btn) buyBuff2Btn.onClick.AddListener(() => Purchase(buff2Price, OnBuyBuff2Success, numOfBuff2));
+        if (buyBuff3Btn) buyBuff3Btn.onClick.AddListener(() => Purchase(buff3Price, OnBuyBuff3Success, numOfBuff3));
     }
 
     private void OnEnable()
@@ -54,90 +83,59 @@ public class UIShop : MonoBehaviour
 
     public void Init()
     {
-        coinText.text = DataManager.Instance.GameData.Coin.ToString();
-        numOfBuff1.text = DataManager.Instance.GameData.NumOfBuff1.ToString();
-        numOfBuff2.text = DataManager.Instance.GameData.NumOfBuff2.ToString();
-        numOfBuff3.text = DataManager.Instance.GameData.NumOfBuff3.ToString();
-        CheckAcceptBuy(priceBuff1);
-        CheckAcceptBuy(priceBuff2);
-        CheckAcceptBuy(priceBuff3);
-    }    
+        GameData gd = DataManager.Instance.GameData;
 
-    public void PurchaseBuff1()
-    {
-        if (DataManager.Instance.GameData.Coin >= buff1Price)
-        {
-            DataManager.Instance.GameData.Coin -= buff1Price;
-            DataManager.Instance.GameData.NumOfBuff1 += 1;
-            coinText.text = DataManager.Instance.GameData.Coin.ToString();
-            numOfBuff1.text = DataManager.Instance.GameData.NumOfBuff1.ToString();
-        }
-        CheckAcceptBuy(priceBuff1);
-    }    
+        if (coinText) coinText.text = gd.Coin.ToString();
+        if (numOfBuff1) numOfBuff1.text = gd.NumOfBuff1.ToString();
+        if (numOfBuff2) numOfBuff2.text = gd.NumOfBuff2.ToString();
+        if (numOfBuff3) numOfBuff3.text = gd.NumOfBuff3.ToString();
 
-    public void PurchaseBuff2()
-    {
-        if (DataManager.Instance.GameData.Coin >= buff2Price)
-        {
-            DataManager.Instance.GameData.Coin -= buff2Price;
-            DataManager.Instance.GameData.NumOfBuff2 += 1;
-            coinText.text = DataManager.Instance.GameData.Coin.ToString();
-            numOfBuff2.text = DataManager.Instance.GameData.NumOfBuff2.ToString();
-        }
-        CheckAcceptBuy(priceBuff2);
-    }    
-
-    public void PurchaseBuff3()
-    {
-        if (DataManager.Instance.GameData.Coin >= buff3Price)
-        {
-            DataManager.Instance.GameData.Coin -= buff3Price;
-            DataManager.Instance.GameData.NumOfBuff3 += 1;
-            coinText.text = DataManager.Instance.GameData.Coin.ToString();
-            numOfBuff3.text = DataManager.Instance.GameData.NumOfBuff3.ToString();
-        }
-        CheckAcceptBuy(priceBuff3);
-
+        CheckAcceptBuy();
     }
 
-    public void CheckAcceptBuy(TextMeshProUGUI priceTxt)
+    private void OnBuyBuff1Success() { DataManager.Instance.GameData.NumOfBuff1++; }
+    private void OnBuyBuff2Success() { DataManager.Instance.GameData.NumOfBuff2++; }
+    private void OnBuyBuff3Success() { DataManager.Instance.GameData.NumOfBuff3++; }
+
+    private void Purchase(int price, Action onSuccess, TextMeshProUGUI countLabel)
     {
-        if (DataManager.Instance.GameData.Coin < int.Parse(priceTxt.text))
+        GameData gd = DataManager.Instance.GameData;
+
+        if (gd.Coin >= price)
         {
-            priceTxt.color = Color.red;
+            gd.Coin -= price;
+            onSuccess?.Invoke();
+
+            if (coinText) coinText.text = gd.Coin.ToString();
+
+            if (countLabel != null)
+            {
+                int currentCount = 0;
+                int.TryParse(countLabel.text, out currentCount);
+                int newCount = currentCount + 1;
+                countLabel.text = newCount.ToString();
+            }
+
+            AudioManager.Instance.PlayUseCoinSound();
         }
         else
         {
-            priceTxt.color = Color.black;
+            AudioManager.Instance.PlayErrorSound();
         }
-    }    
 
-    public void OnDrawGizmosSelected()
+        CheckAcceptBuy();
+    }
+
+    public void CheckAcceptBuy()
     {
-        buffList = Resources.LoadAll<BuffSO>("BuffSO").ToList();
-        foreach (BuffSO buff in buffList)
-        {
-            if (buff.id == BuffType.Buff1)
-            {
-                iconBuff1.sprite = buff.icon;
-                nameBuff1.text = buff.buffName;
-                descriptionBuff1.text = buff.description;
-                priceBuff1.text = buff1Price.ToString();
-            }
-            else if (buff.id == BuffType.Buff2)
-            {
-                iconBuff2.sprite = buff.icon;
-                nameBuff2.text = buff.buffName;
-                descriptionBuff2.text = buff.description;
-                priceBuff2.text = buff2Price.ToString();
-            }
-            else if (buff.id == BuffType.Buff3)
-            {
-                iconBuff3.sprite = buff.icon;
-                nameBuff3.text = buff.buffName;
-                descriptionBuff3.text = buff.description;
-                priceBuff3.text = buff3Price.ToString();
-            }
-        }
+        int coin = DataManager.Instance.GameData.Coin;
+
+        priceBuff1.color = (coin < buff1Price) ? Color.red : Color.black;
+        priceBuff2.color = (coin < buff2Price) ? Color.red : Color.black;
+        priceBuff3.color = (coin < buff3Price) ? Color.red : Color.black;
+
+        buyBuff1Btn.interactable = (coin >= buff1Price);
+        buyBuff2Btn.interactable = (coin >= buff2Price);
+        buyBuff3Btn.interactable = (coin >= buff3Price);
     }
 }

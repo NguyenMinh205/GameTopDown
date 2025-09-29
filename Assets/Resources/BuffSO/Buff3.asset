@@ -16,3 +16,4 @@ MonoBehaviour:
   buffName: Phasing
   description: Grants complete immunity to all incoming damage for 5 seconds.
   icon: {fileID: 21300000, guid: 9a5d24a7d84659548908917b9a84d6e1, type: 3}
+  price: 300

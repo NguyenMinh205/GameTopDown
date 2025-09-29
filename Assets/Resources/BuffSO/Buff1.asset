@@ -16,3 +16,4 @@ MonoBehaviour:
   buffName: Healing
   description: ' Immediately restores 10% of the user''s Maximum Health'
   icon: {fileID: 21300000, guid: ed19e69d662295b4eb60ccf84300bd7d, type: 3}
+  price: 100

@@ -45,12 +45,10 @@ public class MenuUIManager : MonoBehaviour
     public void OnClickSetting()
     {
         popupSetting.SetActive(true);
-        //settingManager.Init();
     }
 
     public void OnClickShop()
     {
         popupShop.SetActive(true);
-        //shopManager.Init();
     }
 }

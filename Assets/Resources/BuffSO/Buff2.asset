@@ -16,3 +16,4 @@ MonoBehaviour:
   buffName: Enrage
   description: Your tank receives double Attack Speed and Damage for 5 seconds.
   icon: {fileID: 21300000, guid: 61b884ef35c4dea4db7779968a855984, type: 3}
+  price: 200

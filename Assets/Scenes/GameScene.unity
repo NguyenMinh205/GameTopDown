@@ -33311,7 +33311,7 @@ GameObject:
   - component: {fileID: 973212431}
   - component: {fileID: 973212432}
   m_Layer: 0
-  m_Name: direction_ring_thick_128
+  m_Name: Direction_Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

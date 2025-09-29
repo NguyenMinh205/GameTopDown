@@ -10,6 +10,7 @@ public class BuffSO : ScriptableObject
     [TextArea(1, 5)]
     public string description;
     public Sprite icon;
+    public int price;
 }
 
 public enum BuffType

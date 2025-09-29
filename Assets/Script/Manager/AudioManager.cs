@@ -25,6 +25,7 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioClip explosionSound;
     [SerializeField] private AudioClip startWaveSound;
     [SerializeField] private AudioClip endGameSound;
+    [SerializeField] private AudioClip errorSound;
 
     protected override void Awake()
     {
@@ -181,6 +182,11 @@ public class AudioManager : Singleton<AudioManager>
     public void PlayEndGameSound()
     {
         PlaySFX(endGameSound);
+    }
+
+    public void PlayErrorSound()
+    {
+        PlaySFX(errorSound);
     }
     #endregion
 }
