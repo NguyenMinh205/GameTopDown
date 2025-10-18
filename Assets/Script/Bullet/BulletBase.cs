@@ -22,10 +22,8 @@ public class BulletBase : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        //StartCoroutine(DeStructBullet());
     }
 
-    // Update is called once per frame
     void Update()
     {
         this.lifeTime -= Time.deltaTime;
@@ -34,12 +32,6 @@ public class BulletBase : MonoBehaviour
             PoolingManager.Despawn(this.gameObject);
         }
     }
-
-    //IEnumerator DeStructBullet()
-    //{
-    //    yield return new WaitForSeconds(lifeTime);
-    //    PoolingManager.Despawn(this.gameObject);
-    //}
 
     private void FixedUpdate()
     {
@@ -59,6 +51,8 @@ public class BulletBase : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.GetComponent<BulletBase>() != null) return;
+        else if (collision.gameObject.CompareTag("Bound")) return;
         this.Hit(collision.gameObject);
     }
 }

@@ -18,12 +18,11 @@ public class BarrelController : MonoBehaviour
         {
             curTypeOfBarrel.Fire();
         } 
-            
     }
 
-    public void ChangeTypeOfBarrel(BarrelBase nextBarrel)
+    public void ChangeTypeOfBarrel(BarrelBase newBarrel)
     {
-        this.curTypeOfBarrel = nextBarrel;
+        this.curTypeOfBarrel = newBarrel;
         curTypeOfBarrel.Init(barrel);
     }    
 }

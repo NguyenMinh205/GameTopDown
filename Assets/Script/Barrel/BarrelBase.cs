@@ -19,8 +19,9 @@ public abstract class BarrelBase : MonoBehaviour
 
     private void FixedUpdate()
     {
-        timer -= Time.deltaTime;
+        timer = Mathf.Max(0f, timer - Time.deltaTime);
     }
+
 
     public abstract void Fire();
 }

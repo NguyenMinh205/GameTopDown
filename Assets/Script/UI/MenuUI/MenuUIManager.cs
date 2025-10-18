@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Menu;
+using DG.Tweening;
 
 public class MenuUIManager : MonoBehaviour
 {
@@ -28,10 +29,14 @@ public class MenuUIManager : MonoBehaviour
         btnExit.GetComponent<Button>().onClick.AddListener(OnClickExit);
         btnSetting.GetComponent<Button>().onClick.AddListener(OnClickSetting);
         btnShop.GetComponent<Button>().onClick.AddListener(OnClickShop);
-        popupSetting.SetActive(false);
-        popupShop.SetActive(false);
+        settingManager.gameObject.SetActive(false);
+        shopManager.gameObject.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        AudioManager.Instance?.PlayMusicInMenu();
+    }
     public void OnClickPlay()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(2);
@@ -44,11 +49,40 @@ public class MenuUIManager : MonoBehaviour
 
     public void OnClickSetting()
     {
-        popupSetting.SetActive(true);
+        settingManager.gameObject.SetActive(true);
+        popupSetting.transform.DOKill();
+        popupSetting.transform.localScale = Vector3.zero;
+
+        popupSetting.transform.DOScale(Vector3.one, 0.25f)
+            .SetEase(Ease.OutBack);
     }
 
     public void OnClickShop()
     {
-        popupShop.SetActive(true);
+        shopManager.gameObject.SetActive(true);
+        popupSetting.transform.DOKill();
+        popupShop.transform.localScale = Vector3.zero;
+
+        popupShop.transform.DOScale(Vector3.one, 0.25f)
+            .SetEase(Ease.OutBack);
+    }
+
+    public void CloseSetting()
+    {
+        popupSetting.transform.DOKill();
+        popupSetting.transform.DOScale(Vector3.zero, 0.25f)
+            .SetEase(Ease.InBack).OnComplete(() => settingManager.gameObject.SetActive(false));
+    }
+
+    public void CloseShop()
+    {
+        popupSetting.transform.DOKill();
+        popupShop.transform.DOScale(Vector3.zero, 0.25f)
+            .SetEase(Ease.InBack).OnComplete(() => shopManager.gameObject.SetActive(false));
+    }
+
+    private void OnDisable()
+    {
+        AudioManager.Instance.StopMusic();
     }
 }

@@ -37,6 +37,13 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
+    private void Start()
+    {
+        SetMusicVolume(DataManager.Instance.GameData.VolumeMusic);
+        SetSoundVolume(DataManager.Instance.GameData.VolumeSFX);
+        PlayMusicIntro();
+    }
+
     public void SetMusicVolume(float volume)
     {
         if (musicSource != null)
@@ -44,12 +51,6 @@ public class AudioManager : Singleton<AudioManager>
             musicSource.volume = volume;
             DataManager.Instance.GameData.VolumeMusic = volume;
         }
-    }
-
-    private void Start()
-    {
-        SetMusicVolume(DataManager.Instance.GameData.VolumeMusic);
-        SetSoundVolume(DataManager.Instance.GameData.VolumeSFX);
     }
 
     public void SetSoundVolume(float volume)

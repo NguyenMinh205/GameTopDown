@@ -21,6 +21,7 @@ public class DataManager : Singleton<DataManager>
     }
 }
 
+[System.Serializable]
 public class GameData
 {
     [SerializeField] private bool isFirstTimePlay;

@@ -34,13 +34,9 @@ public class LoadScene : MonoBehaviour
             loadingSlider.value = progress;
             loadingTxt.text = $"Loading...{Mathf.Floor(progress * 100)}%";
 
-            if (asyncOperation.progress >= 1f - 0.001f)
+            if (asyncOperation.progress >= 0.9f)
             {
-                loadingTxt.text = "Press any key to continue";
-                if (Input.anyKeyDown)
-                {
-                    asyncOperation.allowSceneActivation = true;
-                }
+                asyncOperation.allowSceneActivation = true;
             }
 
             yield return null;

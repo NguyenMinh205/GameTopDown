@@ -1,18 +1,162 @@
+﻿using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GamePlayManager : MonoBehaviour
+public enum GameState
 {
-    [SerializeField] private PlayerController playerController; 
+    OnEnemyDie,
+}
 
-    public void Init()
+public class GamePlayManager : Singleton<GamePlayManager>
+{
+    [Header("Controller")]
+    [SerializeField] private PlayerController _playerController;
+    public PlayerController PlayerController => _playerController;
+
+    [SerializeField] private EnemyManager _enemyManager;
+    public EnemyManager EnemyManager => _enemyManager;
+
+    [SerializeField] private WaveSpawnerController _waveSpawnerController;
+    public WaveSpawnerController WaveSpawnerController => _waveSpawnerController;
+
+    [Header("UI & Popups")]
+    [SerializeField] private GameObject _endGamePopUp;
+    [SerializeField] private GameObject _waveNotification;
+
+    [Header("Config")]
+    [SerializeField] private float _waveNotifScaleInDuration = 0.35f;
+    [SerializeField] private float _waveNotifHoldDuration = 0.65f;
+    [SerializeField] private float _waveNotifScaleOutDuration = 0.25f;
+
+    private int _currentWave = 1;
+    public int CurrentWave => _currentWave;
+    private Tween _waveTween; 
+
+    private int _numOfBuff1;
+    public int NumOfBuff1 => _numOfBuff1;
+    private int _numOfBuff2;
+    public int NumOfBuff2 => _numOfBuff2;
+    private int _numOfBuff3;
+    public int NumOfBuff3 => _numOfBuff3;
+
+    private void Awake()
     {
-        playerController.Init();
+        Time.timeScale = 1;
+        if (_endGamePopUp != null) _endGamePopUp.SetActive(false);
+        if (_waveNotification != null) _waveNotification.SetActive(false);
     }
 
     private void Start()
     {
-        Init();
+        StartNewGame();
+    }
+
+    public void StartNewGame()
+    {
+        _playerController.Init();
+        _enemyManager.Init();
+        _endGamePopUp.SetActive(false);
+        _waveNotification.SetActive(false);
+        _currentWave = 1;
+        _numOfBuff1 = DataManager.Instance.GameData.NumOfBuff1;
+        _numOfBuff2 = DataManager.Instance.GameData.NumOfBuff2;
+        _numOfBuff3 = DataManager.Instance.GameData.NumOfBuff3;
+        GameUIController.Instance.SetupStartGame();
+        StartNewWave();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            UseBuff(BuffType.Buff1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            UseBuff(BuffType.Buff2);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            UseBuff(BuffType.Buff3);
+        }    
+    }
+
+    public void StartNewWave()
+    {
+        GameUIController.Instance.ShowWaveText(_currentWave);
+        _waveNotification.SetActive(true);
+        _waveNotification.transform.localScale = new Vector3(1, 0, 1);
+
+        _waveTween?.Kill();
+
+        _waveTween = DOTween.Sequence()
+                .Append(_waveNotification.transform.DOScale(1f, _waveNotifScaleInDuration).SetEase(Ease.OutBack))
+                .AppendInterval(_waveNotifHoldDuration)
+                .Append(_waveNotification.transform.DOScale(0f, _waveNotifScaleOutDuration).SetEase(Ease.InBack))
+                .OnComplete(() => {
+                    _waveNotification.SetActive(false);
+                    _waveSpawnerController.SetUpWaveData();
+                });
+    }
+
+    public void UseBuff(BuffType buffType)
+    {
+        switch (buffType)
+        {
+            case BuffType.Buff1:
+                if (_numOfBuff1 > 0)
+                {
+                    _numOfBuff1--;
+                    GameUIController.Instance.UpdateNumOfBuff(_numOfBuff1, BuffType.Buff1);
+                }
+                break;
+            case BuffType.Buff2:
+                if (_numOfBuff2 > 0)
+                {
+                    _numOfBuff2--;
+                    GameUIController.Instance.UpdateNumOfBuff(_numOfBuff2, BuffType.Buff2);
+                }
+                break;
+            case BuffType.Buff3:
+                if (_numOfBuff3 > 0)
+                {
+                    _numOfBuff3--;
+                    GameUIController.Instance.UpdateNumOfBuff(_numOfBuff3, BuffType.Buff3);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void EndWave()
+    {
+        _currentWave++;
+        //Thêm chọn lõi
+        StartNewWave();
+    }
+
+    public void PauseGame()
+    {
+        GameUIController.Instance.OpenSetting(true);
+        Time.timeScale = 0;
+    }
+
+    public void ResumeGame()
+    {
+        GameUIController.Instance.OpenSetting(false);
+        Time.timeScale = 1;
+    }
+
+    public void EndGame(bool isWin)
+    {
+        _endGamePopUp.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void BackHome()
+    {
+        Time.timeScale = 1;
     }
 }

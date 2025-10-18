@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Buff", menuName = "ScriptableObjects/Buff")]
-public class BuffSO : ScriptableObject
+public class BuffInfoSO : ScriptableObject
 {
     public BuffType id;
     public string buffName;

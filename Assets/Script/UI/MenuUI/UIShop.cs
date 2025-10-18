@@ -38,32 +38,32 @@ public class UIShop : MonoBehaviour
     [SerializeField] private Button buyBuff3Btn;
     private int buff3Price = 300;
 
-    private readonly Dictionary<BuffType, BuffSO> _buffMap = new Dictionary<BuffType, BuffSO>();
+    private readonly Dictionary<BuffType, BuffInfoSO> _buffMap = new Dictionary<BuffType, BuffInfoSO>();
 
     private void Start()
     {
-        BuffSO[] all = Resources.LoadAll<BuffSO>("BuffSO");
+        BuffInfoSO[] all = Resources.LoadAll<BuffInfoSO>("BuffInfoSO");
         for (int i = 0; i < all.Length; i++)
         {
-            BuffSO buff = all[i];
+            BuffInfoSO buff = all[i];
             _buffMap[buff.id] = buff;
         }
 
-        if (_buffMap.TryGetValue(BuffType.Buff1, out BuffSO b1))
+        if (_buffMap.TryGetValue(BuffType.Buff1, out BuffInfoSO b1))
         {
             if (iconBuff1) iconBuff1.sprite = b1.icon;
             if (nameBuff1) nameBuff1.text = b1.buffName;
             if (descriptionBuff1) descriptionBuff1.text = b1.description;
             if (priceBuff1) priceBuff1.text = b1.price.ToString();
         }
-        if (_buffMap.TryGetValue(BuffType.Buff2, out BuffSO b2))
+        if (_buffMap.TryGetValue(BuffType.Buff2, out BuffInfoSO b2))
         {
             if (iconBuff2) iconBuff2.sprite = b2.icon;
             if (nameBuff2) nameBuff2.text = b2.buffName;
             if (descriptionBuff2) descriptionBuff2.text = b2.description;
             if (priceBuff2) priceBuff2.text = b2.price.ToString();
         }
-        if (_buffMap.TryGetValue(BuffType.Buff3, out BuffSO b3))
+        if (_buffMap.TryGetValue(BuffType.Buff3, out BuffInfoSO b3))
         {
             if (iconBuff3) iconBuff3.sprite = b3.icon;
             if (nameBuff3) nameBuff3.text = b3.buffName;

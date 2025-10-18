@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Direction_Ring : MonoBehaviour
+public class BossTank : MonoBehaviour
 {
-    [SerializeField] private Transform frontArrow;
+    // Start is called before the first frame update
     void Start()
     {
         

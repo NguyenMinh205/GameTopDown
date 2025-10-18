@@ -13,14 +13,17 @@ public class UITankDetail : MonoBehaviour
     [Header("Upgrade Max HP")]
     [SerializeField] private Button _upgradeHP;
     [SerializeField] private TextMeshProUGUI _priceUpHPTxt;
+    [SerializeField] private TextMeshProUGUI _descriptionHPTxt;
 
     [Header("Upgrade Max Shield")]
     [SerializeField] private TextMeshProUGUI _priceUpShieldTxt;
     [SerializeField] private Button _upgradeShield;
+    [SerializeField] private TextMeshProUGUI _descriptionShieldTxt;
 
     [Header("Upgrade Attack Stat")]
     [SerializeField] private Button _upgradeAttackStat;
     [SerializeField] private TextMeshProUGUI _priceUpAttackStatTxt;
+    [SerializeField] private TextMeshProUGUI _descriptionAttackStatTxt;
 
     [Header("Choose Skin UI")]
     [SerializeField] private Button _leftBtn;
@@ -67,8 +70,6 @@ public class UITankDetail : MonoBehaviour
             DataManager.Instance.GameData.Hp += DataManager.Instance.GameData.HpUpgradeValue;
             DataManager.Instance.GameData.HpUpgradeValue += DataManager.Instance.GameData.HpUpgradeIncreaseValue;
             DataManager.Instance.GameData.PriceUpHP += DataManager.Instance.GameData.DefaultUpgradePrice;
-            _hpTxt.text = DataManager.Instance.GameData.Hp.ToString();
-            _priceUpHPTxt.text = DataManager.Instance.GameData.PriceUpHP.ToString();
             AudioManager.Instance.PlayUseCoinSound();
         }
         else
@@ -86,8 +87,6 @@ public class UITankDetail : MonoBehaviour
             DataManager.Instance.GameData.Shield += DataManager.Instance.GameData.ShieldUpgradeValue;
             DataManager.Instance.GameData.ShieldUpgradeValue += DataManager.Instance.GameData.ShieldUpgradeIncreaseValue;
             DataManager.Instance.GameData.PriceUpShield += DataManager.Instance.GameData.DefaultUpgradePrice;
-            _shieldTxt.text = DataManager.Instance.GameData.Shield.ToString();
-            _priceUpShieldTxt.text = DataManager.Instance.GameData.PriceUpShield.ToString();
             AudioManager.Instance.PlayUseCoinSound();
         }
         else
@@ -105,8 +104,6 @@ public class UITankDetail : MonoBehaviour
             DataManager.Instance.GameData.AttackStat += DataManager.Instance.GameData.AttackStatUpgradeValue;
             DataManager.Instance.GameData.AttackStatUpgradeValue += DataManager.Instance.GameData.AttackStatUpgradeIncreaseValue;
             DataManager.Instance.GameData.PriceUpAttackStat += DataManager.Instance.GameData.DefaultUpgradePrice;
-            _attackStatTxt.text = DataManager.Instance.GameData.AttackStat.ToString();
-            _priceUpAttackStatTxt.text = DataManager.Instance.GameData.PriceUpAttackStat.ToString();
             AudioManager.Instance.PlayUseCoinSound();
         }
         else
@@ -127,6 +124,23 @@ public class UITankDetail : MonoBehaviour
         _upgradeHP.interactable = gd.Coin >= gd.PriceUpHP;
         _upgradeShield.interactable = gd.Coin >= gd.PriceUpShield;
         _upgradeAttackStat.interactable = gd.Coin >= gd.PriceUpAttackStat;
+
+        UpdateText();
+    }
+
+    public void UpdateText()
+    {
+        _hpTxt.text = DataManager.Instance.GameData.Hp.ToString();
+        _priceUpHPTxt.text = DataManager.Instance.GameData.PriceUpHP.ToString();
+        _descriptionHPTxt.text = $"Up Max HP (+ {DataManager.Instance.GameData.HpUpgradeValue})";
+
+        _shieldTxt.text = DataManager.Instance.GameData.Shield.ToString();
+        _priceUpShieldTxt.text = DataManager.Instance.GameData.PriceUpShield.ToString();
+        _descriptionShieldTxt.text = $"Up Max Armor (+ {DataManager.Instance.GameData.ShieldUpgradeValue})";
+
+        _attackStatTxt.text = DataManager.Instance.GameData.AttackStat.ToString();
+        _priceUpAttackStatTxt.text = DataManager.Instance.GameData.PriceUpAttackStat.ToString();
+        _descriptionAttackStatTxt.text = $"Up Attack Stat (+ {DataManager.Instance.GameData.AttackStatUpgradeValue})";
     }
 }
 
