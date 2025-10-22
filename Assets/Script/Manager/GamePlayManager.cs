@@ -20,9 +20,16 @@ public class GamePlayManager : Singleton<GamePlayManager>
     [SerializeField] private WaveSpawnerController _waveSpawnerController;
     public WaveSpawnerController WaveSpawnerController => _waveSpawnerController;
 
+    [SerializeField] private RewardManager _rewardManager;
+    public RewardManager RewardManager => _rewardManager;
+
+    [SerializeField] private BuffController _buffController;
+    public BuffController BuffController => _buffController;
+
     [Header("UI & Popups")]
     [SerializeField] private GameObject _endGamePopUp;
     [SerializeField] private GameObject _waveNotification;
+    [SerializeField] private GameObject _rewardPopup;
 
     [Header("Config")]
     [SerializeField] private float _waveNotifScaleInDuration = 0.35f;
@@ -31,17 +38,11 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     private int _currentWave = 1;
     public int CurrentWave => _currentWave;
-    private Tween _waveTween; 
+    private Tween _waveTween;
 
-    private int _numOfBuff1;
-    public int NumOfBuff1 => _numOfBuff1;
-    private int _numOfBuff2;
-    public int NumOfBuff2 => _numOfBuff2;
-    private int _numOfBuff3;
-    public int NumOfBuff3 => _numOfBuff3;
-
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Time.timeScale = 1;
         if (_endGamePopUp != null) _endGamePopUp.SetActive(false);
         if (_waveNotification != null) _waveNotification.SetActive(false);
@@ -59,9 +60,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
         _endGamePopUp.SetActive(false);
         _waveNotification.SetActive(false);
         _currentWave = 1;
-        _numOfBuff1 = DataManager.Instance.GameData.NumOfBuff1;
-        _numOfBuff2 = DataManager.Instance.GameData.NumOfBuff2;
-        _numOfBuff3 = DataManager.Instance.GameData.NumOfBuff3;
+        _buffController.Init();
         GameUIController.Instance.SetupStartGame();
         StartNewWave();
     }
@@ -79,7 +78,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             UseBuff(BuffType.Buff3);
-        }    
+        }
     }
 
     public void StartNewWave()
@@ -94,7 +93,8 @@ public class GamePlayManager : Singleton<GamePlayManager>
                 .Append(_waveNotification.transform.DOScale(1f, _waveNotifScaleInDuration).SetEase(Ease.OutBack))
                 .AppendInterval(_waveNotifHoldDuration)
                 .Append(_waveNotification.transform.DOScale(0f, _waveNotifScaleOutDuration).SetEase(Ease.InBack))
-                .OnComplete(() => {
+                .OnComplete(() =>
+                {
                     _waveNotification.SetActive(false);
                     _waveSpawnerController.SetUpWaveData();
                 });
@@ -105,25 +105,13 @@ public class GamePlayManager : Singleton<GamePlayManager>
         switch (buffType)
         {
             case BuffType.Buff1:
-                if (_numOfBuff1 > 0)
-                {
-                    _numOfBuff1--;
-                    GameUIController.Instance.UpdateNumOfBuff(_numOfBuff1, BuffType.Buff1);
-                }
+                _buffController.UseBuff1();
                 break;
             case BuffType.Buff2:
-                if (_numOfBuff2 > 0)
-                {
-                    _numOfBuff2--;
-                    GameUIController.Instance.UpdateNumOfBuff(_numOfBuff2, BuffType.Buff2);
-                }
+                _buffController.UseBuff2();
                 break;
             case BuffType.Buff3:
-                if (_numOfBuff3 > 0)
-                {
-                    _numOfBuff3--;
-                    GameUIController.Instance.UpdateNumOfBuff(_numOfBuff3, BuffType.Buff3);
-                }
+                _buffController.UseBuff3();
                 break;
             default:
                 break;
@@ -132,10 +120,22 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     public void EndWave()
     {
+        DataManager.Instance.GameData.Coin += 10 * _currentWave;
+        GameUIController.Instance.UpdateCoin(DataManager.Instance.GameData.Coin);
         _currentWave++;
-        //Thêm chọn lõi
-        StartNewWave();
+        ShowRewardEachWave();
     }
+
+    public void ShowRewardEachWave()
+    {
+
+    }    
+
+    public void ChooseReward(RewardSO reward)
+    {
+        Time.timeScale = 1;
+        StartNewWave();
+    }    
 
     public void PauseGame()
     {
@@ -149,8 +149,9 @@ public class GamePlayManager : Singleton<GamePlayManager>
         Time.timeScale = 1;
     }
 
-    public void EndGame(bool isWin)
+    public void EndGame()
     {
+        _enemyManager.ClearAllEnemy();
         _endGamePopUp.SetActive(true);
         Time.timeScale = 0;
     }

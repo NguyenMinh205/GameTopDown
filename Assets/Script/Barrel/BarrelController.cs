@@ -7,10 +7,7 @@ public class BarrelController : MonoBehaviour
     [SerializeField] private BarrelBase curTypeOfBarrel;
     [SerializeField] private GameObject barrel;
 
-    private void Start()
-    {
-        curTypeOfBarrel.Init(barrel);
-    }
+    public BarrelBase CurTypeOfBarrel => curTypeOfBarrel;
 
     private void Update()
     {

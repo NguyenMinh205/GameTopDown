@@ -11,7 +11,7 @@ public class BasicBarrel : BarrelBase
         Quaternion angle = barrelParent.transform.rotation * Quaternion.Euler(0, 0, 180);
 
         BulletBase bullet = PoolingManager.Spawn<BulletBase>(bulletPrefab, transform.position, angle, objectPool.transform);
-        bullet.Init(-barrel.transform.up, bulletTime);
+        bullet.Init(-barrel.transform.up, bulletTime, damage);
 
         timer = attackCoolDown;
     }

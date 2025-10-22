@@ -12,4 +12,5 @@ public class EnemyInfoSO : ScriptableObject
     public float DmgExplosion;
     public float RateOfFire;
     public float Dmg;
+    public int CoinValue;
 }

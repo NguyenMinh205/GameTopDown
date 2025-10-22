@@ -56,8 +56,7 @@ public class EnemyManager : MonoBehaviour
 
         Vector2 spawnPos = RandomPosSpawn();
         EnemyBase newEnemy = PoolingManager.Spawn<EnemyBase>(enemyPrefab, spawnPos, Quaternion.identity, objectPool != null ? objectPool.transform : null);
-        newEnemy.Init(enemyInfo.HP, enemyInfo.Armor, enemyInfo.DmgExplosion, enemyInfo.Speed, enemyInfo.Dmg, enemyInfo.RateOfFire
-        );
+        newEnemy.Init(enemyInfo.HP, enemyInfo.Armor, enemyInfo.DmgExplosion, enemyInfo.Speed, enemyInfo.Dmg, enemyInfo.RateOfFire, enemyInfo.CoinValue);
     }
 
     public void GetScaledInfo()
@@ -89,6 +88,11 @@ public class EnemyManager : MonoBehaviour
     public Vector2 RandomPosSpawn()
     {
         return spawnGates[Random.Range(0, spawnGates.Count)].gameObject.transform.position;
+    }
+
+    public void ClearAllEnemy()
+    {
+        //Xóa bỏ toàn bộ enemy trên bản đồ
     }
 
     private void OnDisable()

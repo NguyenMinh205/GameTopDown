@@ -1,11 +1,12 @@
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class PlayerController : Singleton<PlayerController>, IGetHit
 {
     [Header("Stats")]
     [SerializeField] private float maxHP;
-    [SerializeField] private float armor;       // Max Armor
+    [SerializeField] private float maxArmor;
     [SerializeField] private float attackStat;
     [SerializeField] private float speed;
     [SerializeField] private float speedRotate;
@@ -14,7 +15,7 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
     private float curArmor;
 
     public float MaxHP => maxHP;
-    public float MaxArmor => armor;
+    public float MaxArmor => maxArmor;
     public float CurHP => curHP;
     public float CurArmor => curArmor;
     public float AttackStat { get => attackStat; set => attackStat = value; }
@@ -29,16 +30,35 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
     private Coroutine delayCo, regenCo;
     private int regenVersion = 0;
 
+    [Header("Barrel")]
+    [SerializeField] private GameObject barrelObject;
+    [SerializeField] private BarrelBase defaultBarrel;
+    [SerializeField] private BarrelController barrelController;
+    public BarrelController BarrelController => barrelController;
+
+    private bool isInvincible = false;
+
+    public void SetInvincible(bool value)
+    {
+        isInvincible = value;
+    }
+
     public void Init()
     {
         playerRB = GetComponent<Rigidbody2D>(); 
         this.maxHP = DataManager.Instance.GameData.Hp; 
-        this.armor = DataManager.Instance.GameData.Shield; 
+        this.maxArmor = DataManager.Instance.GameData.Shield; 
         this.attackStat = DataManager.Instance.GameData.AttackStat; 
         curHP = maxHP; 
-        curArmor = armor;
+        curArmor = maxArmor;
         regenVersion = 0;
         ScheduleRegen();
+
+        if (barrelController != null)
+        {
+            barrelController.ChangeTypeOfBarrel(defaultBarrel);
+        } 
+            
     }
 
     private void Update()
@@ -56,8 +76,22 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
             this.playerRB.velocity = Vector2.zero;
     }
 
+    public void ChangeBarrel(BarrelBase newBarrel)
+    {
+        
+    }
+
+    public void Heal(float val)
+    {
+        curHP += val;
+        if (curHP > maxHP) curHP = maxHP;
+        GameUIController.Instance?.UpdateBar();
+    }
+
     public void GetHit(float dmg)
     {
+        if (isInvincible) return;
+
         CancelRegen();
 
         float remain = dmg;
@@ -77,6 +111,8 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
         if (this.curHP <= 0f)
         {
             PoolingManager.Despawn(this.gameObject);
+            GamePlayManager.Instance.BuffController.StopAllCoroutine();
+            GamePlayManager.Instance.EndGame();
             return;
         }
 
@@ -103,7 +139,7 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
 
         if (ver != regenVersion) yield break;
 
-        if (curHP <= 0f || curArmor >= armor) yield break;
+        if (curHP <= 0f || curArmor >= maxArmor) yield break;
 
         regenCo = StartCoroutine(RegenTickLoop(ver));
     }
@@ -111,20 +147,55 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
     private IEnumerator RegenTickLoop(int ver)
     {
         var wait = new WaitForSeconds(regenTick);
-        float perTick = armor * shieldRegenPercentPerSec * regenTick;
+        float perTick = maxArmor * shieldRegenPercentPerSec * regenTick;
 
         while (true)
         {
             if (ver != regenVersion) break;
             if (curHP <= 0f) break;
-            if (curArmor >= armor) break;
+            if (curArmor >= maxArmor) break;
 
-            curArmor = Mathf.Min(armor, curArmor + perTick);
-            GameUIController.Instance?.UpdateShieldBar(curArmor, armor);
+            curArmor = Mathf.Min(maxArmor, curArmor + perTick);
+            GameUIController.Instance?.UpdateShieldBar(curArmor, maxArmor);
 
             yield return wait;
         }
 
         regenCo = null;
     }
+
+    //public void ModifyAttackSpeed(float multiplier, float duration)
+    //{
+    //    if (barrelController != null && barrelController.CurTypeOfBarrel != null)
+    //    {
+    //        StartCoroutine(TempModifyAttackSpeed(multiplier, duration));
+    //    }
+    //}
+
+    //private IEnumerator TempModifyAttackSpeed(float multiplier, float duration)
+    //{
+    //    float originalCooldown = barrelController.CurTypeOfBarrel.AttackCoolDown;
+    //    barrelController.CurTypeOfBarrel.AttackCoolDown /= multiplier;
+    //    yield return new WaitForSeconds(duration);
+    //    barrelController.CurTypeOfBarrel.AttackCoolDown = originalCooldown;
+    //}
+
+    //public void ModifyDamage(float multiplier, float duration)
+    //{
+    //    if (barrelController != null && barrelController.CurTypeOfBarrel != null)
+    //    {
+    //        StartCoroutine(TempModifyDamage(multiplier, duration));
+    //    }
+    //}
+
+    //private IEnumerator TempModifyDamage(float multiplier, float duration)
+    //{
+    //    float originalDamage = barrelController.CurTypeOfBarrel.Damage;
+    //    float originalAttackStat = this.AttackStat;
+    //    barrelController.CurTypeOfBarrel.Damage *= multiplier;
+    //    this.AttackStat *= multiplier;
+    //    yield return new WaitForSeconds(duration);
+    //    barrelController.CurTypeOfBarrel.Damage = originalDamage;
+    //    this.AttackStat = originalAttackStat;
+    //}
 }

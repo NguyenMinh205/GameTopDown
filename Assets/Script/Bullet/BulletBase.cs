@@ -13,10 +13,11 @@ public class BulletBase : MonoBehaviour
         this.movement = movement;
     }
 
-    public void Init(Vector2 movement, float lifeTime)
+    public void Init(Vector2 movement, float lifeTime, float damage)
     {
         this.movement = movement;
         this.lifeTime = lifeTime;
+        this.damage = damage;
     }
     
     void Start()
