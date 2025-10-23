@@ -46,7 +46,8 @@ public class BulletBase : MonoBehaviour
 
         if (isCanGetHit != null)
         {
-            target.GetComponent<IGetHit>().GetHit(damage);
+            target.GetComponent<IGetHit>().GetHit(damage + GamePlayManager.Instance.PlayerController.AttackStat);
+            Debug.Log("Check");
         }
     }
 

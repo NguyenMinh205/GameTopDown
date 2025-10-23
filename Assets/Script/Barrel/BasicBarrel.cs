@@ -19,5 +19,5 @@ public class BasicBarrel : BarrelBase
     public void ChangeBullet (BulletBase bullet)
     {
         this.bulletPrefab = bullet;
-    }    
+    }
 }

@@ -10,6 +10,7 @@ public class EnemyBase : MonoBehaviour, IGetHit
     protected float _speed;
     protected float _damage;
     protected float _rateOfFire;
+    protected int _coinValue;
 
     private Rigidbody2D _rb;
     private Vector2 _movement;
@@ -18,7 +19,7 @@ public class EnemyBase : MonoBehaviour, IGetHit
     [SerializeField] private EnemyType _enemyType;
     public EnemyType EnemyType => _enemyType;
 
-    public void Init(float hp, float armor, float dmpExplosion, float speed, float dmg, float rateOfFire)
+    public void Init(float hp, float armor, float dmpExplosion, float speed, float dmg, float rateOfFire, int coinVal)
     {
         this._hp = hp;
         this._armor = armor;
@@ -26,6 +27,7 @@ public class EnemyBase : MonoBehaviour, IGetHit
         this._speed = speed;
         this._damage = dmg;
         this._rateOfFire = rateOfFire;
+        this._coinValue = coinVal;
         _rb = GetComponent<Rigidbody2D>();
         _player = PlayerController.Instance.transform;
     }
@@ -89,6 +91,8 @@ public class EnemyBase : MonoBehaviour, IGetHit
     {
         Debug.Log("Enemy die");
         PoolingManager.Despawn(this.gameObject);
+        DataManager.Instance.GameData.Coin += _coinValue;
+        GameUIController.Instance.UpdateCoin(DataManager.Instance.GameData.Coin);
         ObserverManager<GameState>.PostEvent(GameState.OnEnemyDie, this);
     }
 

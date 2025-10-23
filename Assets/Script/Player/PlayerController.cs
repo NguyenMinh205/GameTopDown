@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
@@ -31,8 +32,8 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
     private int regenVersion = 0;
 
     [Header("Barrel")]
-    [SerializeField] private GameObject barrelObject;
     [SerializeField] private BarrelBase defaultBarrel;
+    [SerializeField] private List<BarrelBase> availableBarrels;
     [SerializeField] private BarrelController barrelController;
     public BarrelController BarrelController => barrelController;
 

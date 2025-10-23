@@ -26,6 +26,5 @@ public abstract class BarrelBase : MonoBehaviour
         timer = Mathf.Max(0f, timer - Time.deltaTime);
     }
 
-
     public abstract void Fire();
 }
