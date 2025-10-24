@@ -96,6 +96,7 @@ public class WaveSpawnerController : MonoBehaviour
             GamePlayManager.Instance.EnemyManager.GetScaledInfo();
         }
 
+        GameUIController.Instance.DetailsInCurWave(total, wave);
         StartSpawnNewWave(enemiesWorking);
     }
 

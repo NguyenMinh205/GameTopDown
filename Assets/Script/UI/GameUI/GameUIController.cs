@@ -3,19 +3,29 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class GameUIController : Singleton<GameUIController>
 {
+    [Header("Player Bar")]
     [SerializeField] private Image _hpBar;
     [SerializeField] private TextMeshProUGUI _hpVal;
 
     [SerializeField] private Image _shieldBar;
     [SerializeField] private TextMeshProUGUI _shieldVal;
 
-    [SerializeField] private GameObject settingPopup;
+    [SerializeField] private GameObject _settingPopup;
+    [SerializeField] private GameObject _endGamePopUp;
+    [SerializeField] private GameObject _rewardPopUp;
+
+    [Header("Detail Wave")]
     [SerializeField] private TextMeshProUGUI _waveText;
     [SerializeField] private TextMeshProUGUI _coinText;
+    [SerializeField] private TextMeshProUGUI _numOfCurWaveText;
+    [SerializeField] private TextMeshProUGUI _numOfEnemyKilledText;
+    [SerializeField] private TextMeshProUGUI _numOfEnemyInCurWaveText;
 
+    [Header("Buff")]
     [SerializeField] private TextMeshProUGUI _numOfBuff1;
     [SerializeField] private TextMeshProUGUI _numOfBuff2;
     [SerializeField] private TextMeshProUGUI _numOfBuff3;
@@ -121,8 +131,70 @@ public class GameUIController : Singleton<GameUIController>
         cooldownImage.fillAmount = 0f;
     }
 
-    public void OpenSetting(bool val)
+    public void DetailsInCurWave(int numOfEnemyInCurWave, int curWave)
     {
-        settingPopup.SetActive(val);
+        _numOfCurWaveText.text = curWave.ToString();
+        UpdateNumOfEnemyInCurWave(numOfEnemyInCurWave);
+    }
+
+    public void UpdateNumOfEnemyInCurWave(int numOfEnemyInCurWave)
+    {
+        _numOfEnemyInCurWaveText.text = numOfEnemyInCurWave.ToString();
+    }
+
+    public void UpdateNumOfEnemyKilled(int numOfEnemyKilled)
+    {
+        _numOfEnemyKilledText.text = numOfEnemyKilled.ToString();
+    }
+
+    public void ShowSetting(bool val)
+    {
+        if (val)
+        {
+            _settingPopup.SetActive(true);
+            _settingPopup.transform.DOScale(Vector3.one, 0.25f)
+                .From(Vector3.zero)
+                .SetEase(Ease.OutBack);
+        }
+        else
+        {
+            _settingPopup.transform.DOScale(Vector3.zero, 0.25f)
+                .SetEase(Ease.InBack)
+                .OnComplete(() => _settingPopup.SetActive(false));
+        }
+    }
+
+    public void ShowEndGamePopup(bool val)
+    {
+        if (val)
+        {
+            _endGamePopUp.SetActive(true);
+            _endGamePopUp.transform.DOScale(Vector3.one, 0.25f)
+                .From(Vector3.zero)
+                .SetEase(Ease.OutBack);
+        }
+        else
+        {
+            _endGamePopUp.transform.DOScale(Vector3.zero, 0.25f)
+                .SetEase(Ease.InBack)
+                .OnComplete(() => _endGamePopUp.SetActive(false));
+        }
+    }
+
+    public void ShowRewardPopup(bool val)
+    {
+        if (val)
+        {
+            _rewardPopUp.SetActive(true);
+            _rewardPopUp.transform.DOScale(Vector3.one, 0.25f)
+                .From(Vector3.zero)
+                .SetEase(Ease.OutBack);
+        }
+        else
+        {
+            _rewardPopUp.transform.DOScale(Vector3.zero, 0.25f)
+                .SetEase(Ease.InBack)
+                .OnComplete(() => _rewardPopUp.SetActive(false));
+        }
     }
 }

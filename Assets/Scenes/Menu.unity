@@ -4677,7 +4677,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1800418789781628789, guid: 84d3c25100e62a845a6291d10009b615, type: 3}
       propertyPath: m_text
-      value: 'Up Attack Stat (+1) '
+      value: 'Up Tank Damage (+2) '
       objectReference: {fileID: 0}
     - target: {fileID: 2138663750322145155, guid: 84d3c25100e62a845a6291d10009b615, type: 3}
       propertyPath: m_Name

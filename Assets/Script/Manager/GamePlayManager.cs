@@ -27,9 +27,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
     public BuffController BuffController => _buffController;
 
     [Header("UI & Popups")]
-    [SerializeField] private GameObject _endGamePopUp;
     [SerializeField] private GameObject _waveNotification;
-    [SerializeField] private GameObject _rewardPopup;
 
     [Header("Config")]
     [SerializeField] private float _waveNotifScaleInDuration = 0.35f;
@@ -39,12 +37,13 @@ public class GamePlayManager : Singleton<GamePlayManager>
     private int _currentWave = 1;
     public int CurrentWave => _currentWave;
     private Tween _waveTween;
+    private bool _isChoosingReward = false;
+    public bool IsChoosingReward => _isChoosingReward;
 
     protected override void Awake()
     {
         base.Awake();
         Time.timeScale = 1;
-        if (_endGamePopUp != null) _endGamePopUp.SetActive(false);
         if (_waveNotification != null) _waveNotification.SetActive(false);
     }
 
@@ -57,9 +56,10 @@ public class GamePlayManager : Singleton<GamePlayManager>
     {
         _playerController.Init();
         _enemyManager.Init();
-        _endGamePopUp.SetActive(false);
+        GameUIController.Instance.ShowEndGamePopup(false);
+        GameUIController.Instance.ShowRewardPopup(false);
         _waveNotification.SetActive(false);
-        _currentWave = 1;
+        _currentWave = 0;
         _buffController.Init();
         GameUIController.Instance.SetupStartGame();
         StartNewWave();
@@ -83,6 +83,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     public void StartNewWave()
     {
+        _currentWave++;
         GameUIController.Instance.ShowWaveText(_currentWave);
         _waveNotification.SetActive(true);
         _waveNotification.transform.localScale = new Vector3(1, 0, 1);
@@ -122,37 +123,41 @@ public class GamePlayManager : Singleton<GamePlayManager>
     {
         DataManager.Instance.GameData.Coin += 10 * _currentWave;
         GameUIController.Instance.UpdateCoin(DataManager.Instance.GameData.Coin);
-        _currentWave++;
         ShowRewardEachWave();
     }
 
     public void ShowRewardEachWave()
     {
-
+        _isChoosingReward = true;
+        GameUIController.Instance.ShowRewardPopup(true);
+        _rewardManager.GenerateReward();
+        _playerController.PauseForReward();
     }    
 
-    public void ChooseReward(RewardSO reward)
+    public void EndChooseReward()
     {
-        Time.timeScale = 1;
+        _isChoosingReward = false;
+        GameUIController.Instance.ShowRewardPopup(false);
+        _playerController.ResumeFromReward();
         StartNewWave();
-    }    
+    }
 
     public void PauseGame()
     {
-        GameUIController.Instance.OpenSetting(true);
+        GameUIController.Instance.ShowSetting(true);
         Time.timeScale = 0;
     }
 
     public void ResumeGame()
     {
-        GameUIController.Instance.OpenSetting(false);
+        GameUIController.Instance.ShowSetting(false);
         Time.timeScale = 1;
     }
 
     public void EndGame()
     {
         _enemyManager.ClearAllEnemy();
-        _endGamePopUp.SetActive(true);
+        GameUIController.Instance.ShowEndGamePopup(true);
         Time.timeScale = 0;
     }
 

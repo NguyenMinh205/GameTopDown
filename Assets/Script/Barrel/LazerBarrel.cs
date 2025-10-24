@@ -6,14 +6,15 @@ public class LazerBarrel : BarrelBase
     [Header("Lazer Config")]
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private float lazerLength = 25f;
-    [SerializeField] private float lazerDuration = 0.2f;
+    [SerializeField] private float lazerDuration = 0.1f;
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private float reduceDamagePercent = 0.5f;
 
     private bool isFiring = false;
 
     public override void Fire()
     {
-        if (timer > 0 || isFiring) return;
+        if (timer > 0 || isFiring || GamePlayManager.Instance.IsChoosingReward) return;
 
         StartCoroutine(ShootLazer());
         timer = attackCoolDown;
@@ -37,13 +38,13 @@ public class LazerBarrel : BarrelBase
         lineRenderer.SetPosition(0, startPos);
         lineRenderer.SetPosition(1, endPos);
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(startPos, direction, lazerLength, enemyLayer);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(startPos, direction, lazerLength, enemyLayer);   
         foreach (RaycastHit2D hit in hits)
         {
             IGetHit getHit = hit.collider.GetComponent<IGetHit>();
             if (getHit != null)
             {
-                getHit.GetHit(damage * PlayerController.Instance.AttackStat);
+                getHit.GetHit(PlayerController.Instance.AttackStat * reduceDamagePercent);
             }
         }
 

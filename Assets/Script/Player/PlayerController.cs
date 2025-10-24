@@ -15,13 +15,14 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
     private float curHP;
     private float curArmor;
 
-    public float MaxHP => maxHP;
-    public float MaxArmor => maxArmor;
-    public float CurHP => curHP;
-    public float CurArmor => curArmor;
+    public float MaxHP { get => maxHP; set => maxHP = value; }
+    public float MaxArmor { get => maxArmor; set => maxArmor = value; }
+    public float CurHP { get => curHP; set => curHP = value; }
+    public float CurArmor { get => curArmor; set => curArmor = value; }
     public float AttackStat { get => attackStat; set => attackStat = value; }
 
     private Rigidbody2D playerRB;
+    private bool isPaused = false;
 
     [Header("Shield Regen")]
     [SerializeField] private float shieldRegenDelay = 5f;
@@ -33,7 +34,9 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
 
     [Header("Barrel")]
     [SerializeField] private BarrelBase defaultBarrel;
-    [SerializeField] private List<BarrelBase> availableBarrels;
+    [SerializeField] private BarrelBase tripleShotBarrel;
+    [SerializeField] private BarrelBase bombBarrel;
+    [SerializeField] private BarrelBase laserBarrel;
     [SerializeField] private BarrelController barrelController;
     public BarrelController BarrelController => barrelController;
 
@@ -64,6 +67,11 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
 
     private void Update()
     {
+        if (GamePlayManager.Instance.IsChoosingReward || isPaused)
+        {
+            this.playerRB.velocity = Vector2.zero;
+            return;
+        }
         if (Input.GetKey(KeyCode.A))
             this.transform.Rotate(0, 0, speedRotate * Time.deltaTime);
         else if (Input.GetKey(KeyCode.D))
@@ -77,9 +85,42 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
             this.playerRB.velocity = Vector2.zero;
     }
 
-    public void ChangeBarrel(BarrelBase newBarrel)
+    public void PauseForReward()
     {
-        
+        if (isPaused) return;
+        isPaused = true;
+
+        CancelRegen();
+    }
+
+    public void ResumeFromReward()
+    {
+        if (!isPaused) return;
+        isPaused = false;
+
+        ScheduleRegen();
+    }
+
+
+    public void ChangeBarrel(string nameBarrel)
+    {
+        if (barrelController == null) return;
+        if (nameBarrel.Equals("Multiple Shot"))
+        {
+            barrelController.ChangeTypeOfBarrel(tripleShotBarrel);
+        }
+        else if (nameBarrel.Equals("Explosive Shot"))
+        {
+            barrelController.ChangeTypeOfBarrel(bombBarrel);
+        }
+        else if (nameBarrel.Equals("Beam Cannon"))
+        {
+            barrelController.ChangeTypeOfBarrel(laserBarrel);
+        }
+        else
+        {
+            barrelController.ChangeTypeOfBarrel(defaultBarrel);
+        }
     }
 
     public void Heal(float val)

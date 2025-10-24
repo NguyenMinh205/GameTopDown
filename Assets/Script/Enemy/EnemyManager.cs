@@ -13,6 +13,26 @@ public class EnemyManager : MonoBehaviour
 
     private int _waveNumber = 1;
     private int _numOfEnemyInCurWave;
+    private int _numOfEnemyKilled = 0;
+    public int NumOfEnemyInCurWave
+    {  
+        get { return _numOfEnemyInCurWave; }
+        set 
+        { 
+            _numOfEnemyInCurWave = value; 
+            GameUIController.Instance.UpdateNumOfEnemyInCurWave(_numOfEnemyInCurWave);
+        }
+    }
+
+    public int NumOfEnemyKilled
+    {  
+        get { return _numOfEnemyKilled; }
+        set 
+        { 
+            _numOfEnemyKilled = value; 
+            GameUIController.Instance.UpdateNumOfEnemyKilled(_numOfEnemyKilled);
+        }
+    }
     private List<EnemyInfoSO> _cloneEnemyList;
 
     public void Init()
@@ -31,6 +51,8 @@ public class EnemyManager : MonoBehaviour
             _cloneEnemyList.Add(cloneInfo);
         }
         ObserverManager<GameState>.AddRegisterEvent(GameState.OnEnemyDie, OnEnemyDie);
+        NumOfEnemyInCurWave = 0;
+        NumOfEnemyKilled = 0;
     }
 
     public void SetEnemyCountForWave(int total, int waveNumber)
@@ -78,7 +100,8 @@ public class EnemyManager : MonoBehaviour
 
     public void OnEnemyDie(object param)
     {
-        _numOfEnemyInCurWave--;
+        NumOfEnemyInCurWave--;
+        NumOfEnemyKilled++;
         if (_numOfEnemyInCurWave <= 0)
         {
             GamePlayManager.Instance.EndWave();

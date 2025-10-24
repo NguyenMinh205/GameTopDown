@@ -75,7 +75,7 @@ public class GameData
     private const float defaultSound = 0.5f;
     private const float defaultHP = 100;
     private const float defaultShield = 50;
-    private const float defaultAttack = 3;
+    private const float defaultAttack = 5;
     private const int defaultCoin = 100;
     private const int defaultNumOfBuff1 = 0;
     private const int defaultNumOfBuff2 = 0;
@@ -96,7 +96,7 @@ public class GameData
     #region SAVE/LOAD DATA
     public void Load()
     {
-        isFirstTimePlay = PlayerPrefs.GetInt("isFirstTimePlay", 1) == 1 ? true : false;
+        isFirstTimePlay = PlayerPrefs.GetInt("isFirstTimePlay", 0) == 1 ? true : false;
         volumeMusic = PlayerPrefs.GetFloat("volumeMusic", defaultVolume);
         volumeSFX = PlayerPrefs.GetFloat("volumeSFX", defaultSound);
         hp = PlayerPrefs.GetFloat("hp", defaultHP);

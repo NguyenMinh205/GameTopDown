@@ -55,9 +55,8 @@ public class BuffController : MonoBehaviour
         BarrelBase barrel = GamePlayManager.Instance.PlayerController.BarrelController.CurTypeOfBarrel;
         if (barrel != null)
         {
-            float originalDamage = barrel.Damage;
+            float originalDamage = GamePlayManager.Instance.PlayerController.AttackStat;
             float originalCooldown = barrel.AttackCoolDown;
-            barrel.Damage *= 2f;
             barrel.AttackCoolDown *= 0.5f;
             _numOfBuff2--;
             DataManager.Instance.GameData.NumOfBuff2 = _numOfBuff2;
@@ -79,7 +78,7 @@ public class BuffController : MonoBehaviour
     private IEnumerator ResetBuff2(BarrelBase barrel, float originalDamage, float originalCooldown)
     {
         yield return new WaitForSeconds(5f);
-        barrel.Damage = originalDamage;
+        GamePlayManager.Instance.PlayerController.AttackStat = originalDamage;
         barrel.AttackCoolDown = originalCooldown;
         resetBuff2Coroutine = null;
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BulletBase : MonoBehaviour
 {
-    [SerializeField] protected float speed, damage, lifeTime;
+    [SerializeField] protected float speed, lifeTime;
     protected Rigidbody2D rb;
 
     protected Vector2 movement = Vector2.zero;
@@ -13,11 +13,10 @@ public class BulletBase : MonoBehaviour
         this.movement = movement;
     }
 
-    public void Init(Vector2 movement, float lifeTime, float damage)
+    public void Init(Vector2 movement, float lifeTime)
     {
         this.movement = movement;
         this.lifeTime = lifeTime;
-        this.damage = damage;
     }
     
     void Start()
@@ -46,8 +45,7 @@ public class BulletBase : MonoBehaviour
 
         if (isCanGetHit != null)
         {
-            target.GetComponent<IGetHit>().GetHit(damage + GamePlayManager.Instance.PlayerController.AttackStat);
-            Debug.Log("Check");
+            target.GetComponent<IGetHit>().GetHit(GamePlayManager.Instance.PlayerController.AttackStat);
         }
     }
 

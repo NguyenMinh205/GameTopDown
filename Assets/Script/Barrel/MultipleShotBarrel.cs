@@ -8,7 +8,7 @@ public class MultipleShBarrel : BarrelBase
     private Coroutine shotCoroutine;
     public override void Fire()
     {
-        if (timer > 0) return;
+        if (timer > 0 || GamePlayManager.Instance.IsChoosingReward) return;
         if (shotCoroutine != null)
         {
             StopCoroutine(shotCoroutine);
@@ -23,7 +23,7 @@ public class MultipleShBarrel : BarrelBase
         {
             Quaternion baseAngle = barrelParent.transform.rotation * Quaternion.Euler(0, 0, 180);
             BulletBase bullet = PoolingManager.Spawn<BulletBase>(bulletPrefab, transform.position, baseAngle, objectPool.transform);
-            bullet.Init(-barrel.transform.up, bulletTime, damage);
+            bullet.Init(-barrel.transform.up, bulletTime);
             yield return new WaitForSeconds(0.1f);
         }
     }    
