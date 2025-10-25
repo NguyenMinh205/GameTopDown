@@ -14,11 +14,17 @@ public class GameUIController : Singleton<GameUIController>
     [SerializeField] private Image _shieldBar;
     [SerializeField] private TextMeshProUGUI _shieldVal;
 
+    [Header("Popups")]
+    [SerializeField] private GameObject _settingPopupParent;
+    [SerializeField] private GameObject _endGamePopupParent;
+    [SerializeField] private GameObject _rewardPopupParent;
     [SerializeField] private GameObject _settingPopup;
     [SerializeField] private GameObject _endGamePopUp;
     [SerializeField] private GameObject _rewardPopUp;
 
     [Header("Detail Wave")]
+    [SerializeField] private GameObject _waveNotificationParent;
+    [SerializeField] private GameObject _waveNotification;
     [SerializeField] private TextMeshProUGUI _waveText;
     [SerializeField] private TextMeshProUGUI _coinText;
     [SerializeField] private TextMeshProUGUI _numOfCurWaveText;
@@ -34,8 +40,13 @@ public class GameUIController : Singleton<GameUIController>
     [SerializeField] private Image _cooldownBuff2;
     [SerializeField] private Image _cooldownBuff3;
 
-    private PlayerController curPlayer;
+    [Header("Config")]
+    [SerializeField] private float _waveNotifScaleInDuration = 0.35f;
+    [SerializeField] private float _waveNotifHoldDuration = 0.65f;
+    [SerializeField] private float _waveNotifScaleOutDuration = 0.35f;
 
+    private PlayerController curPlayer;
+    private Tween _waveTween;
     private Coroutine cooldownCoroutine;
 
     public void SetupStartGame()
@@ -147,11 +158,29 @@ public class GameUIController : Singleton<GameUIController>
         _numOfEnemyKilledText.text = numOfEnemyKilled.ToString();
     }
 
+    public void ShowWaveNotification()
+    {
+        _waveNotificationParent.SetActive(true);
+        _waveNotification.transform.localScale = new Vector3(1, 0, 1);
+
+        _waveTween?.Kill();
+
+        _waveTween = DOTween.Sequence()
+                .Append(_waveNotification.transform.DOScale(1f, _waveNotifScaleInDuration).SetEase(Ease.OutBack))
+                .AppendInterval(_waveNotifHoldDuration)
+                .Append(_waveNotification.transform.DOScale(0f, _waveNotifScaleOutDuration).SetEase(Ease.InBack))
+                .OnComplete(() =>
+                {
+                    _waveNotificationParent.SetActive(false);
+                    GamePlayManager.Instance.WaveSpawnerController.SetUpWaveData();
+                });
+    }
+
     public void ShowSetting(bool val)
     {
         if (val)
         {
-            _settingPopup.SetActive(true);
+            _settingPopupParent.SetActive(true);
             _settingPopup.transform.DOScale(Vector3.one, 0.25f)
                 .From(Vector3.zero)
                 .SetEase(Ease.OutBack);
@@ -160,7 +189,7 @@ public class GameUIController : Singleton<GameUIController>
         {
             _settingPopup.transform.DOScale(Vector3.zero, 0.25f)
                 .SetEase(Ease.InBack)
-                .OnComplete(() => _settingPopup.SetActive(false));
+                .OnComplete(() => _settingPopupParent.SetActive(false));
         }
     }
 
@@ -168,7 +197,7 @@ public class GameUIController : Singleton<GameUIController>
     {
         if (val)
         {
-            _endGamePopUp.SetActive(true);
+            _endGamePopupParent.SetActive(true);
             _endGamePopUp.transform.DOScale(Vector3.one, 0.25f)
                 .From(Vector3.zero)
                 .SetEase(Ease.OutBack);
@@ -177,7 +206,7 @@ public class GameUIController : Singleton<GameUIController>
         {
             _endGamePopUp.transform.DOScale(Vector3.zero, 0.25f)
                 .SetEase(Ease.InBack)
-                .OnComplete(() => _endGamePopUp.SetActive(false));
+                .OnComplete(() => _endGamePopupParent.SetActive(false));
         }
     }
 
@@ -185,7 +214,7 @@ public class GameUIController : Singleton<GameUIController>
     {
         if (val)
         {
-            _rewardPopUp.SetActive(true);
+            _rewardPopupParent.SetActive(true);
             _rewardPopUp.transform.DOScale(Vector3.one, 0.25f)
                 .From(Vector3.zero)
                 .SetEase(Ease.OutBack);
@@ -194,7 +223,7 @@ public class GameUIController : Singleton<GameUIController>
         {
             _rewardPopUp.transform.DOScale(Vector3.zero, 0.25f)
                 .SetEase(Ease.InBack)
-                .OnComplete(() => _rewardPopUp.SetActive(false));
+                .OnComplete(() => _rewardPopupParent.SetActive(false));
         }
     }
 }

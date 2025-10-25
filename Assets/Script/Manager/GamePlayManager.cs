@@ -26,14 +26,6 @@ public class GamePlayManager : Singleton<GamePlayManager>
     [SerializeField] private BuffController _buffController;
     public BuffController BuffController => _buffController;
 
-    [Header("UI & Popups")]
-    [SerializeField] private GameObject _waveNotification;
-
-    [Header("Config")]
-    [SerializeField] private float _waveNotifScaleInDuration = 0.35f;
-    [SerializeField] private float _waveNotifHoldDuration = 0.65f;
-    [SerializeField] private float _waveNotifScaleOutDuration = 0.25f;
-
     private int _currentWave = 1;
     public int CurrentWave => _currentWave;
     private Tween _waveTween;
@@ -44,7 +36,6 @@ public class GamePlayManager : Singleton<GamePlayManager>
     {
         base.Awake();
         Time.timeScale = 1;
-        if (_waveNotification != null) _waveNotification.SetActive(false);
     }
 
     private void Start()
@@ -58,7 +49,6 @@ public class GamePlayManager : Singleton<GamePlayManager>
         _enemyManager.Init();
         GameUIController.Instance.ShowEndGamePopup(false);
         GameUIController.Instance.ShowRewardPopup(false);
-        _waveNotification.SetActive(false);
         _currentWave = 0;
         _buffController.Init();
         GameUIController.Instance.SetupStartGame();
@@ -85,20 +75,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
     {
         _currentWave++;
         GameUIController.Instance.ShowWaveText(_currentWave);
-        _waveNotification.SetActive(true);
-        _waveNotification.transform.localScale = new Vector3(1, 0, 1);
-
-        _waveTween?.Kill();
-
-        _waveTween = DOTween.Sequence()
-                .Append(_waveNotification.transform.DOScale(1f, _waveNotifScaleInDuration).SetEase(Ease.OutBack))
-                .AppendInterval(_waveNotifHoldDuration)
-                .Append(_waveNotification.transform.DOScale(0f, _waveNotifScaleOutDuration).SetEase(Ease.InBack))
-                .OnComplete(() =>
-                {
-                    _waveNotification.SetActive(false);
-                    _waveSpawnerController.SetUpWaveData();
-                });
+        GameUIController.Instance.ShowWaveNotification();
     }
 
     public void UseBuff(BuffType buffType)
