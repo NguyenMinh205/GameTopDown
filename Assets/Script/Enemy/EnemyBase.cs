@@ -34,11 +34,21 @@ public class EnemyBase : MonoBehaviour, IGetHit
 
     protected virtual void Update()
     {
+        if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused)
+        {
+            this._rb.velocity = Vector2.zero;
+            return;
+        }
         FollowPlayer();
     }
 
     protected virtual void FixedUpdate()
     {
+        if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused)
+        {
+            this._rb.velocity = Vector2.zero;
+            return;
+        }
         if (_rb != null)
             _rb.velocity = _movement * _speed;
     }

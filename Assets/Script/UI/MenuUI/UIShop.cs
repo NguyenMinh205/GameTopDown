@@ -38,14 +38,15 @@ public class UIShop : MonoBehaviour
     [SerializeField] private Button buyBuff3Btn;
     private int buff3Price = 300;
 
+    [SerializeField] private List<BuffInfoSO> buffs;
+
     private readonly Dictionary<BuffType, BuffInfoSO> _buffMap = new Dictionary<BuffType, BuffInfoSO>();
 
     private void Start()
     {
-        BuffInfoSO[] all = Resources.LoadAll<BuffInfoSO>("BuffInfoSO");
-        for (int i = 0; i < all.Length; i++)
+        for (int i = 0; i < buffs.Count; i++)
         {
-            BuffInfoSO buff = all[i];
+            BuffInfoSO buff = buffs[i];
             _buffMap[buff.id] = buff;
         }
 

@@ -52,6 +52,9 @@ TagManager:
   - name: Tank
     uniqueID: 2878492781
     locked: 0
+  - name: Particle
+    uniqueID: 3638565723
+    locked: 0
   - name: UI
     uniqueID: 4064864489
     locked: 0

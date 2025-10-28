@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UITankDetail : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI _coinTxt;
     [SerializeField] private TextMeshProUGUI _hpTxt;
     [SerializeField] private TextMeshProUGUI _shieldTxt;
     [SerializeField] private TextMeshProUGUI _attackStatTxt;
@@ -44,6 +45,7 @@ public class UITankDetail : MonoBehaviour
     private void OnEnable()
     {
         CheckAcceptBuy();
+        UpdateCoinText();
     }
 
     private void ChangeSkin(int delta)
@@ -141,6 +143,13 @@ public class UITankDetail : MonoBehaviour
         _attackStatTxt.text = DataManager.Instance.GameData.AttackStat.ToString();
         _priceUpAttackStatTxt.text = DataManager.Instance.GameData.PriceUpAttackStat.ToString();
         _descriptionAttackStatTxt.text = $"Up Attack Stat (+ {DataManager.Instance.GameData.AttackStatUpgradeValue})";
+
+        UpdateCoinText();
+    }
+
+    public void UpdateCoinText()
+    {
+        _coinTxt.text = DataManager.Instance.GameData.Coin.ToString();
     }
 }
 

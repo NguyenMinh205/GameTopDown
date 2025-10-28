@@ -67,7 +67,7 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
 
     private void Update()
     {
-        if (GamePlayManager.Instance.IsChoosingReward || isPaused)
+        if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused)
         {
             this.playerRB.velocity = Vector2.zero;
             return;
@@ -85,7 +85,7 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
             this.playerRB.velocity = Vector2.zero;
     }
 
-    public void PauseForReward()
+    public void PauseRegenShield()
     {
         if (isPaused) return;
         isPaused = true;
@@ -93,7 +93,7 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
         CancelRegen();
     }
 
-    public void ResumeFromReward()
+    public void ResumeRegenShield()
     {
         if (!isPaused) return;
         isPaused = false;

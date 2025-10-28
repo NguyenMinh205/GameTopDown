@@ -77,14 +77,7 @@ public class RewardManager : MonoBehaviour
     public void ChooseReward(int index)
     {
         RewardSO chosenReward;
-        if (GamePlayManager.Instance.CurrentWave == 1)
-        {
-            chosenReward = weaponRewards[index];
-        }
-        else
-        {
-            chosenReward = statRewards[index];
-        }
+        chosenReward = currentRewards[index];
         ApplyRewardToPlayer(chosenReward);
         DOVirtual.DelayedCall(0.5f, () =>
         {

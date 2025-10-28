@@ -29,6 +29,8 @@ public class GamePlayManager : Singleton<GamePlayManager>
     private int _currentWave = 1;
     public int CurrentWave => _currentWave;
     private Tween _waveTween;
+    private bool _isGamePaused = false;
+    public bool IsGamePaused => _isGamePaused;
     private bool _isChoosingReward = false;
     public bool IsChoosingReward => _isChoosingReward;
 
@@ -108,34 +110,37 @@ public class GamePlayManager : Singleton<GamePlayManager>
         _isChoosingReward = true;
         GameUIController.Instance.ShowRewardPopup(true);
         _rewardManager.GenerateReward();
-        _playerController.PauseForReward();
+        _playerController.PauseRegenShield();
     }    
 
     public void EndChooseReward()
     {
         _isChoosingReward = false;
         GameUIController.Instance.ShowRewardPopup(false);
-        _playerController.ResumeFromReward();
+        _playerController.ResumeRegenShield();
         StartNewWave();
     }
 
     public void PauseGame()
     {
         GameUIController.Instance.ShowSetting(true);
-        Time.timeScale = 0;
+        _isGamePaused = true;
+        _playerController.PauseRegenShield();
     }
 
     public void ResumeGame()
     {
         GameUIController.Instance.ShowSetting(false);
-        Time.timeScale = 1;
+        _isGamePaused = false;
+        _playerController.ResumeRegenShield();
     }
 
     public void EndGame()
     {
         _enemyManager.ClearAllEnemy();
         GameUIController.Instance.ShowEndGamePopup(true);
-        Time.timeScale = 0;
+        _enemyManager.StopAllCoroutines();
+        _enemyManager.ClearAllEnemy();
     }
 
     public void BackHome()
