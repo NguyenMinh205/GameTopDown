@@ -9,6 +9,7 @@ public abstract class BarrelBase : MonoBehaviour
     [SerializeField] protected GameObject objectPool;
     [SerializeField] protected BulletBase bulletPrefab;
     [SerializeField] protected float bulletSpeed, bulletTime, attackCoolDown;
+    [SerializeField] protected GameObject _muzzleFlash;
     protected float timer;
 
     public float AttackCoolDown { get { return attackCoolDown; } set { attackCoolDown = value; } }

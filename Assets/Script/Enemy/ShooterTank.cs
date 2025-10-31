@@ -1,8 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ShooterTank : EnemyBase
+public class ShooterTank : ShootingEnemy
 {
-    
+    protected override IEnumerator ShootBurst()
+    {
+        ShootSingle();
+        yield return null;
+    }
 }

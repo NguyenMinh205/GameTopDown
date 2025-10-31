@@ -62,7 +62,6 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
         {
             barrelController.ChangeTypeOfBarrel(defaultBarrel);
         } 
-            
     }
 
     private void Update()
@@ -72,6 +71,7 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
             this.playerRB.velocity = Vector2.zero;
             return;
         }
+
         if (Input.GetKey(KeyCode.A))
             this.transform.Rotate(0, 0, speedRotate * Time.deltaTime);
         else if (Input.GetKey(KeyCode.D))

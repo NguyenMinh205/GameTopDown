@@ -16,6 +16,7 @@ MonoBehaviour:
   HP: 20
   Armor: 0
   Speed: 3.5
-  DmgExplosion: 5
+  DmgExplosion: 0
   RateOfFire: 0.75
   Dmg: 5
+  CoinValue: 0

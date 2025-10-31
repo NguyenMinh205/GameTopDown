@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8433310548083528809}
   - component: {fileID: 8597693919088963452}
   - component: {fileID: 2484373865784311140}
-  - component: {fileID: -2752598382166319377}
+  - component: {fileID: 4123941753907515527}
   m_Layer: 7
   m_Name: BoomEnemy
   m_TagString: Enemy
@@ -113,7 +113,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &2484373865784311140
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -150,7 +150,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.3125, y: 1.4375}
+    oldSize: {x: 1.1666666, y: 1.2777778}
     newSize: {x: 1.3125, y: 1.4375}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -159,7 +159,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.3125, y: 1.4375}
   m_EdgeRadius: 0
---- !u!114 &-2752598382166319377
+--- !u!114 &4123941753907515527
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,7 +168,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 3698912000802370695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 108614730a5aad94489d8f1627681748, type: 3}
+  m_Script: {fileID: 11500000, guid: df711ea6f97f5ee409a0d22c1f6437d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 0
+  explodeRadius: 0.7

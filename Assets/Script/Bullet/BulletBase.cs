@@ -5,6 +5,7 @@ using UnityEngine;
 public class BulletBase : MonoBehaviour
 {
     [SerializeField] protected float speed, lifeTime;
+    [SerializeField] protected LayerMask targetLayer;
     protected Rigidbody2D rb;
 
     protected Vector2 movement = Vector2.zero;
@@ -41,6 +42,7 @@ public class BulletBase : MonoBehaviour
     protected virtual void Hit(GameObject target)
     {
         PoolingManager.Despawn(this.gameObject);
+        GamePlayManager.Instance.SpawnExplosionShotAnim(this.transform.position);
         IGetHit isCanGetHit = target.gameObject.GetComponent<IGetHit>();
 
         if (isCanGetHit != null)
@@ -51,8 +53,9 @@ public class BulletBase : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<BulletBase>() != null) return;
+        if (collision.gameObject.CompareTag("Bullet")) return;
         else if (collision.gameObject.CompareTag("Bound")) return;
+        else if (((1 << collision.gameObject.layer) & targetLayer) == 0) return;
         this.Hit(collision.gameObject);
     }
 }

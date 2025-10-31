@@ -26,6 +26,13 @@ public class GamePlayManager : Singleton<GamePlayManager>
     [SerializeField] private BuffController _buffController;
     public BuffController BuffController => _buffController;
 
+    [Header("Animation and Particle")]
+    [SerializeField] private GameObject _explosionShotAnim;
+    public GameObject ExplosionShotAnim => _explosionShotAnim;
+    [SerializeField] private GameObject _explosionTankAnim;
+    public GameObject ExplosionTankAnim => _explosionTankAnim;
+    [SerializeField] private Transform _objectPool;
+
     private int _currentWave = 1;
     public int CurrentWave => _currentWave;
     private Tween _waveTween;
@@ -103,6 +110,16 @@ public class GamePlayManager : Singleton<GamePlayManager>
         DataManager.Instance.GameData.Coin += 10 * _currentWave;
         GameUIController.Instance.UpdateCoin(DataManager.Instance.GameData.Coin);
         ShowRewardEachWave();
+    }
+
+    public void SpawnExplosionShotAnim(Vector3 position)
+    {
+        PoolingManager.Spawn(_explosionShotAnim, position, Quaternion.identity, _objectPool);
+    }
+
+    public void SpawnExplosionTankAnim(Vector3 position)
+    {
+        PoolingManager.Spawn(_explosionTankAnim, position, Quaternion.identity, _objectPool);
     }
 
     public void ShowRewardEachWave()

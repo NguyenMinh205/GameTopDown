@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8322078610916750391}
   m_Layer: 10
   m_Name: BombBullet
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,7 +171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f309178056b24534d96c3d5663fabb44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
-  damage: 10
+  speed: 45
   lifeTime: 2
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
   explosionRadius: 5

@@ -8,11 +8,12 @@ public class MultipleShBarrel : BarrelBase
     private Coroutine shotCoroutine;
     public override void Fire()
     {
-        if (timer > 0 || GamePlayManager.Instance.IsChoosingReward) return;
+        if (timer > 0 || GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused) return;
         if (shotCoroutine != null)
         {
             StopCoroutine(shotCoroutine);
         }
+        _muzzleFlash.SetActive(true);
         shotCoroutine = StartCoroutine(ShotBullet());
         timer = attackCoolDown;
     }

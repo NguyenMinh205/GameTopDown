@@ -13,7 +13,7 @@ public class BombBullet : BulletBase
         {
             Debug.LogError("check");
             IGetHit h = c.GetComponent<IGetHit>();
-            if (h != null && c.gameObject.CompareTag("Enemy") && c.gameObject != target)
+            if (h != null && c.gameObject.CompareTag("Enemy"))
             {
                 h.GetHit(GamePlayManager.Instance.PlayerController.AttackStat / 2);
             }

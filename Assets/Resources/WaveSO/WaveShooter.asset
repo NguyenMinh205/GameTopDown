@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemies:
   - enemyType: 0
-    numOfEnemy: 8
+    numOfEnemy: 5
+  - enemyType: 1
+    numOfEnemy: 3

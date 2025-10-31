@@ -7,6 +7,7 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     [SerializeField] private GameObject objectPool;
+    public GameObject ObjectPool => objectPool;
     [SerializeField] private List<GameObject> spawnGates = new List<GameObject>();
     [SerializeField] private List<EnemyBase> enemiesPrefabs = new List<EnemyBase>();
     [SerializeField] private List<EnemyInfoSO> enemyInfos = new List<EnemyInfoSO>();

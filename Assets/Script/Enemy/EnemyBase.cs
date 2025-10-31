@@ -12,14 +12,14 @@ public class EnemyBase : MonoBehaviour, IGetHit
     protected float _rateOfFire;
     protected int _coinValue;
 
-    private Rigidbody2D _rb;
-    private Vector2 _movement;
-    private Transform _player;
+    protected Rigidbody2D _rb;
+    protected Vector2 _movement;
+    protected Transform _player;
 
     [SerializeField] private EnemyType _enemyType;
     public EnemyType EnemyType => _enemyType;
 
-    public void Init(float hp, float armor, float dmpExplosion, float speed, float dmg, float rateOfFire, int coinVal)
+    public virtual void Init(float hp, float armor, float dmpExplosion, float speed, float dmg, float rateOfFire, int coinVal)
     {
         this._hp = hp;
         this._armor = armor;
@@ -39,7 +39,6 @@ public class EnemyBase : MonoBehaviour, IGetHit
             this._rb.velocity = Vector2.zero;
             return;
         }
-        FollowPlayer();
     }
 
     protected virtual void FixedUpdate()
@@ -72,13 +71,6 @@ public class EnemyBase : MonoBehaviour, IGetHit
         this.transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    protected void RotateBarrelTowards(Transform t)
-    {
-        Vector3 dir = (_player.transform.position - t.position).normalized;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90;
-        t.rotation = Quaternion.Euler(0, 0, angle);
-    }
-
     public void GetHit(float dmg)
     {
         if (dmg - _armor > 0)
@@ -101,26 +93,10 @@ public class EnemyBase : MonoBehaviour, IGetHit
     {
         Debug.Log("Enemy die");
         PoolingManager.Despawn(this.gameObject);
+        GamePlayManager.Instance.SpawnExplosionTankAnim(this.transform.position);
         DataManager.Instance.GameData.Coin += _coinValue;
         GameUIController.Instance.UpdateCoin(DataManager.Instance.GameData.Coin);
         ObserverManager<GameState>.PostEvent(GameState.OnEnemyDie, this);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        IGetHit isCanGetHit = collision.gameObject.GetComponent<IGetHit>();
-
-        if (isCanGetHit == null || collision.gameObject.CompareTag("Enemy"))
-        {
-            return;
-        }
-        Explode(isCanGetHit);
-        Die();
-    }
-
-    protected virtual void Explode(IGetHit getHit)
-    {
-        getHit.GetHit(_dmgExplosion);
     }
 }
 

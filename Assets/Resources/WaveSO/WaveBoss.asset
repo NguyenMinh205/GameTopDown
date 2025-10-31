@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: WaveBoss
   m_EditorClassIdentifier: 
   enemies:
+  - enemyType: 1
+    numOfEnemy: 5
   - enemyType: 0
-    numOfEnemy: 15
+    numOfEnemy: 8
+  - enemyType: 2
+    numOfEnemy: 1

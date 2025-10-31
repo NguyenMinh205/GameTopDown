@@ -6,7 +6,8 @@ public class BasicBarrel : BarrelBase
 {
     public override void Fire()
     {
-        if (timer > 0 || GamePlayManager.Instance.IsChoosingReward) return;
+        if (timer > 0 || GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused) return;
+        _muzzleFlash.SetActive(true);
 
         Quaternion angle = barrelParent.transform.rotation * Quaternion.Euler(0, 0, 180);
 
