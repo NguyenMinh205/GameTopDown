@@ -17,6 +17,6 @@ MonoBehaviour:
   Armor: 10
   Speed: 2.5
   DmgExplosion: 0
-  RateOfFire: 0.6
+  RateOfFire: 1
   Dmg: 5
   CoinValue: 0

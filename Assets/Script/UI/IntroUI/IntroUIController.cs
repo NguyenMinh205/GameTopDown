@@ -19,15 +19,18 @@ public class IntroUIController : MonoBehaviour
         quitButton.gameObject.SetActive(true);
         playButton.transform.DOScale(1f, 0.35f).SetEase(Ease.OutBounce);
         quitButton.transform.DOScale(1f, 0.35f).SetEase(Ease.OutBounce);
+        AudioManager.Instance.PlayMusicIntro();
     }
 
     public void Play()
     {
+        AudioManager.Instance.PlayButtonClick();
         SceneManager.LoadScene(1);
     }
 
     public void Exit()
     {
+        AudioManager.Instance.PlayButtonClick();
         Application.Quit();
     }
 }

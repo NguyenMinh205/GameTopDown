@@ -9,6 +9,7 @@ public class MultipleShBarrel : BarrelBase
     public override void Fire()
     {
         if (timer > 0 || GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused) return;
+        AudioManager.Instance.PlayShootSound();
         if (shotCoroutine != null)
         {
             StopCoroutine(shotCoroutine);

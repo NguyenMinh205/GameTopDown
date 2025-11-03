@@ -49,6 +49,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     private void Start()
     {
+        AudioManager.Instance.PlayMusicInGame();
         StartNewGame();
     }
 
@@ -85,6 +86,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
         _currentWave++;
         GameUIController.Instance.ShowWaveText(_currentWave);
         GameUIController.Instance.ShowWaveNotification();
+        AudioManager.Instance.PlayStartWaveSound();
     }
 
     public void UseBuff(BuffType buffType)
@@ -140,6 +142,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     public void PauseGame()
     {
+        AudioManager.Instance.PlayPopupSound();
         GameUIController.Instance.ShowSetting(true);
         _isGamePaused = true;
         _playerController.PauseRegenShield();
@@ -147,6 +150,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     public void ResumeGame()
     {
+        AudioManager.Instance.PlayButtonClick();
         GameUIController.Instance.ShowSetting(false);
         _isGamePaused = false;
         _playerController.ResumeRegenShield();
@@ -156,12 +160,15 @@ public class GamePlayManager : Singleton<GamePlayManager>
     {
         _enemyManager.ClearAllEnemy();
         GameUIController.Instance.ShowEndGamePopup(true);
+        GameUIController.Instance.ShowEndGameDetails(_currentWave, _enemyManager.NumOfEnemyKilled);
+        AudioManager.Instance.PlayEndGameSound();
         _enemyManager.StopAllCoroutines();
         _enemyManager.ClearAllEnemy();
     }
 
     public void BackHome()
     {
+        AudioManager.Instance.PlayButtonClick();
         Time.timeScale = 1;
     }
 }

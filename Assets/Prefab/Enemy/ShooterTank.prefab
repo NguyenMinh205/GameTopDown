@@ -272,6 +272,6 @@ MonoBehaviour:
   _enemyType: 1
   barrel: {fileID: 4161252912722514684}
   bulletPrefab: {fileID: 8454693629353756433, guid: ac1f3478ed22bd4448edf3e9d33112f6, type: 3}
-  attackRange: 6.5
+  attackRange: 7
   bulletLifetime: 2
-  burstDelay: 0.1
+  burstDelay: 0.25

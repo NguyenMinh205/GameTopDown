@@ -8,6 +8,7 @@ public class BombBullet : BulletBase
     protected override void Hit(GameObject target)
     {
         base.Hit(target);
+        AudioManager.Instance.PlayExplosionSound();
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
         foreach (Collider2D c in colliders)
         {

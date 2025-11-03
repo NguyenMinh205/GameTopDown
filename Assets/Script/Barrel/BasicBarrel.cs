@@ -8,6 +8,7 @@ public class BasicBarrel : BarrelBase
     {
         if (timer > 0 || GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused) return;
         _muzzleFlash.SetActive(true);
+        AudioManager.Instance.PlayShootSound();
 
         Quaternion angle = barrelParent.transform.rotation * Quaternion.Euler(0, 0, 180);
 

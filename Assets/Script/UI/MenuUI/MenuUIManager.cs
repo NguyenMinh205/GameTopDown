@@ -31,6 +31,7 @@ public class MenuUIManager : MonoBehaviour
         btnShop.GetComponent<Button>().onClick.AddListener(OnClickShop);
         settingManager.gameObject.SetActive(false);
         shopManager.gameObject.SetActive(false);
+        AudioManager.Instance.PlayMusicInMenu();
     }
 
     private void OnEnable()
@@ -39,16 +40,19 @@ public class MenuUIManager : MonoBehaviour
     }
     public void OnClickPlay()
     {
+        AudioManager.Instance.PlayButtonClick();
         UnityEngine.SceneManagement.SceneManager.LoadScene(2);
     }
 
     public void OnClickExit()
     {
+        AudioManager.Instance.PlayButtonClick();
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 
     public void OnClickSetting()
     {
+        AudioManager.Instance.PlayPopupSound();
         settingManager.gameObject.SetActive(true);
         popupSetting.transform.DOKill();
         popupSetting.transform.localScale = Vector3.zero;
@@ -59,6 +63,7 @@ public class MenuUIManager : MonoBehaviour
 
     public void OnClickShop()
     {
+        AudioManager.Instance.PlayPopupSound();
         shopManager.gameObject.SetActive(true);
         popupSetting.transform.DOKill();
         popupShop.transform.localScale = Vector3.zero;
@@ -69,6 +74,7 @@ public class MenuUIManager : MonoBehaviour
 
     public void CloseSetting()
     {
+        AudioManager.Instance.PlayButtonClick();
         popupSetting.transform.DOKill();
         popupSetting.transform.DOScale(Vector3.zero, 0.25f)
             .SetEase(Ease.InBack).OnComplete(() => settingManager.gameObject.SetActive(false));
@@ -76,6 +82,7 @@ public class MenuUIManager : MonoBehaviour
 
     public void CloseShop()
     {
+        AudioManager.Instance.PlayButtonClick();
         popupSetting.transform.DOKill();
         popupShop.transform.DOScale(Vector3.zero, 0.25f)
             .SetEase(Ease.InBack).OnComplete(() => shopManager.gameObject.SetActive(false));

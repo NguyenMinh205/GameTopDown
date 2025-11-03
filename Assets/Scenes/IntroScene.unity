@@ -627,14 +627,19 @@ MonoBehaviour:
   musicSource: {fileID: 1370080498}
   soundSource: {fileID: 1026668798}
   musicIntro: {fileID: 8300000, guid: 8b836bbed8243d44db3a6d4f6a71106b, type: 3}
-  musicInMenu: {fileID: 8300000, guid: 97685b4eef1ce5b43b8c38803aefcde8, type: 3}
+  musicInMenu: {fileID: 8300000, guid: 525997c8b5b14c745adb573a627a1636, type: 3}
   musicInGame: {fileID: 8300000, guid: 97685b4eef1ce5b43b8c38803aefcde8, type: 3}
   buttonClick: {fileID: 8300000, guid: f74061d56ddcb9e44ae7270c6ed676a8, type: 3}
   useCoinSound: {fileID: 8300000, guid: 951c7c0e633138f4d9bd94feb4c185fd, type: 3}
-  upgradeSound: {fileID: 8300000, guid: 4c742898cf030e94f87829c71f684b9c, type: 3}
+  useBuffSound: {fileID: 8300000, guid: 4c742898cf030e94f87829c71f684b9c, type: 3}
+  upgradeSound: {fileID: 8300000, guid: 1ff2c38365030d24c8212f94cb601b69, type: 3}
   popupSound: {fileID: 8300000, guid: 8e3ff4cd9c010f147b1e4284a1b77535, type: 3}
+  bulletHitSound: {fileID: 8300000, guid: 9f5a91428eebcf646a2a3d4f22238097, type: 3}
   shootSound: {fileID: 8300000, guid: fba8011f39f6a14459d2572c5e5df086, type: 3}
+  laserShootSound: {fileID: 8300000, guid: 9cbcf6db089327942b52e7fc3e7f50f4, type: 3}
   explosionSound: {fileID: 8300000, guid: 407303019265da94daed73cdba0a4fa2, type: 3}
+  getHitSound: {fileID: 8300000, guid: 594930e5c8507eb4ca4bb3726a06dd0e, type: 3}
+  enemyDieSound: {fileID: 8300000, guid: e7887f800ba54a7479676edf5b5fb41d, type: 3}
   startWaveSound: {fileID: 8300000, guid: 82c49726c7eaca84d850d4f40ae99d36, type: 3}
   endGameSound: {fileID: 8300000, guid: 72ad5341294a3274aa27dd7260c75925, type: 3}
   errorSound: {fileID: 8300000, guid: ab848cb9f567cda4d92e8e6abafae6e7, type: 3}

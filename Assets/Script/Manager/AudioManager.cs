@@ -19,10 +19,15 @@ public class AudioManager : Singleton<AudioManager>
     [Header("Sound Effects")]
     [SerializeField] private AudioClip buttonClick;
     [SerializeField] private AudioClip useCoinSound;
+    [SerializeField] private AudioClip useBuffSound;
     [SerializeField] private AudioClip upgradeSound;
     [SerializeField] private AudioClip popupSound;
+    [SerializeField] private AudioClip bulletHitSound;
     [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip laserShootSound;
     [SerializeField] private AudioClip explosionSound;
+    [SerializeField] private AudioClip getHitSound;
+    [SerializeField] private AudioClip enemyDieSound;
     [SerializeField] private AudioClip startWaveSound;
     [SerializeField] private AudioClip endGameSound;
     [SerializeField] private AudioClip errorSound;
@@ -155,6 +160,11 @@ public class AudioManager : Singleton<AudioManager>
         PlaySFX(useCoinSound);
     }
 
+    public void PlayUseBuffSound()
+    {
+        PlaySFX(useBuffSound);
+    }
+
     public void PlayUpgradeSound()
     {
         PlaySFX(upgradeSound);
@@ -163,6 +173,16 @@ public class AudioManager : Singleton<AudioManager>
     public void PlayPopupSound()
     {
         PlaySFX(popupSound);
+    }
+
+    public void PlayBulletHitSound()
+    {
+        PlaySFX(bulletHitSound);
+    }    
+
+    public void PlayLaserShoot()
+    {
+        PlaySFX(laserShootSound);
     }
 
     public void PlayShootSound()
@@ -174,6 +194,16 @@ public class AudioManager : Singleton<AudioManager>
     {
         PlaySFX(explosionSound);
     }
+
+    public void PlayHitSound()
+    {
+        PlaySFX(getHitSound);
+    }
+
+    public void PlayEnemyDieSound()
+    {
+        PlaySFX(enemyDieSound);
+    }    
 
     public void PlayStartWaveSound()
     {

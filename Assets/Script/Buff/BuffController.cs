@@ -35,6 +35,7 @@ public class BuffController : MonoBehaviour
     {
         if (isBuff1OnCooldown || _numOfBuff1 <= 0) return;
 
+        AudioManager.Instance.PlayUseBuffSound();
         float maxHP = GamePlayManager.Instance.PlayerController.MaxHP;
         GamePlayManager.Instance.PlayerController.Heal(maxHP * 0.15f);
         _numOfBuff1--;
@@ -52,6 +53,7 @@ public class BuffController : MonoBehaviour
     {
         if (isBuff2OnCooldown || _numOfBuff2 <= 0) return;
 
+        AudioManager.Instance.PlayUseBuffSound();
         BarrelBase barrel = GamePlayManager.Instance.PlayerController.BarrelController.CurTypeOfBarrel;
         if (barrel != null)
         {
@@ -87,6 +89,7 @@ public class BuffController : MonoBehaviour
     {
         if (isBuff3OnCooldown || _numOfBuff3 <= 0) return;
 
+        AudioManager.Instance.PlayUseBuffSound();
         StartCoroutine(Invincibility(5f));
         _numOfBuff3--;
         DataManager.Instance.GameData.NumOfBuff3 = _numOfBuff3;

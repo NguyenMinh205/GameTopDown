@@ -8,7 +8,7 @@ public abstract class ShootingEnemy : EnemyBase
     [SerializeField] protected GameObject bulletPrefab;
     [SerializeField] protected float attackRange = 5f;
     [SerializeField] protected float bulletLifetime = 2f;
-    [SerializeField] protected float burstDelay = 0.1f;
+    [SerializeField] protected float burstDelay = 0.2f;
 
     protected bool _inAttackRange = false;
     protected bool _wasInAttackRange = false;

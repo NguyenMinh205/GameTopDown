@@ -50,6 +50,7 @@ public class UITankDetail : MonoBehaviour
 
     private void ChangeSkin(int delta)
     {
+        AudioManager.Instance.PlayButtonClick();
         if (skinTanks == null || skinTanks.Count == 0) return;
         var gd = DataManager.Instance.GameData;
         gd.SkinIndex = (gd.SkinIndex + delta + skinTanks.Count) % skinTanks.Count;
@@ -72,7 +73,7 @@ public class UITankDetail : MonoBehaviour
             DataManager.Instance.GameData.Hp += DataManager.Instance.GameData.HpUpgradeValue;
             DataManager.Instance.GameData.HpUpgradeValue += DataManager.Instance.GameData.HpUpgradeIncreaseValue;
             DataManager.Instance.GameData.PriceUpHP += DataManager.Instance.GameData.DefaultUpgradePrice;
-            AudioManager.Instance.PlayUseCoinSound();
+            AudioManager.Instance.PlayUpgradeSound();
         }
         else
         {
@@ -89,7 +90,7 @@ public class UITankDetail : MonoBehaviour
             DataManager.Instance.GameData.Shield += DataManager.Instance.GameData.ShieldUpgradeValue;
             DataManager.Instance.GameData.ShieldUpgradeValue += DataManager.Instance.GameData.ShieldUpgradeIncreaseValue;
             DataManager.Instance.GameData.PriceUpShield += DataManager.Instance.GameData.DefaultUpgradePrice;
-            AudioManager.Instance.PlayUseCoinSound();
+            AudioManager.Instance.PlayUpgradeSound();
         }
         else
         {
@@ -106,7 +107,7 @@ public class UITankDetail : MonoBehaviour
             DataManager.Instance.GameData.AttackStat += DataManager.Instance.GameData.AttackStatUpgradeValue;
             DataManager.Instance.GameData.AttackStatUpgradeValue += DataManager.Instance.GameData.AttackStatUpgradeIncreaseValue;
             DataManager.Instance.GameData.PriceUpAttackStat += DataManager.Instance.GameData.DefaultUpgradePrice;
-            AudioManager.Instance.PlayUseCoinSound();
+            AudioManager.Instance.PlayUpgradeSound();
         }
         else
         {

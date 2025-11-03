@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -18,9 +19,11 @@ public class GameUIController : Singleton<GameUIController>
     [SerializeField] private GameObject _settingPopupParent;
     [SerializeField] private GameObject _endGamePopupParent;
     [SerializeField] private GameObject _rewardPopupParent;
+    [SerializeField] private GameObject _instructionPopupParent;
     [SerializeField] private GameObject _settingPopup;
     [SerializeField] private GameObject _endGamePopUp;
     [SerializeField] private GameObject _rewardPopUp;
+    [SerializeField] private GameObject _instructionPopUp;
 
     [Header("Detail Wave")]
     [SerializeField] private GameObject _waveNotificationParent;
@@ -40,6 +43,20 @@ public class GameUIController : Singleton<GameUIController>
     [SerializeField] private Image _cooldownBuff2;
     [SerializeField] private Image _cooldownBuff3;
 
+    [Header("Instruction")]
+    [SerializeField] private Image _instructionImage;
+    [SerializeField] private Button _leftButton;
+    [SerializeField] private Button _rightButton;
+    [SerializeField] private Button _confirmButton;
+    [SerializeField] private List<Sprite> _instructionSprites;
+
+    [Header("EndGame")]
+    [SerializeField] private TextMeshProUGUI _endGameCurWaveText;
+    [SerializeField] private TextMeshProUGUI _endGameHighestWaveText;
+    [SerializeField] private TextMeshProUGUI _endGameNumOfEnemyKilledText;
+    [SerializeField] private TextMeshProUGUI _endGameCoinText;
+    private int coinStartGame = 0;
+
     [Header("Config")]
     [SerializeField] private float _waveNotifScaleInDuration = 0.35f;
     [SerializeField] private float _waveNotifHoldDuration = 0.65f;
@@ -52,6 +69,7 @@ public class GameUIController : Singleton<GameUIController>
     public void SetupStartGame()
     {
         curPlayer = GamePlayManager.Instance.PlayerController;
+        coinStartGame = DataManager.Instance.GameData.Coin;
         UpdateBar();
         UpdateCoin(DataManager.Instance.GameData.Coin);
         UpdateNumOfBuff(DataManager.Instance.GameData.NumOfBuff1, BuffType.Buff1);
@@ -73,13 +91,13 @@ public class GameUIController : Singleton<GameUIController>
     public void UpdateHPBar(float currentHP, float maxHP)
     {
         _hpBar.fillAmount = currentHP / maxHP;
-        _hpVal.text = $"{currentHP}/{maxHP}";
+        _hpVal.text = $"{Math.Round(currentHP, 1)}/{Math.Round(maxHP, 1)}";
     }
 
     public void UpdateShieldBar(float currentShield, float maxShield)
     {
         _shieldBar.fillAmount = currentShield / maxShield;
-        _shieldVal.text = $"{currentShield}/{maxShield}";
+        _shieldVal.text = $"{Math.Round(currentShield, 1)}/{Math.Round(maxShield, 1)}";
     }
 
     public void UpdateCoin(int coin)
@@ -156,6 +174,21 @@ public class GameUIController : Singleton<GameUIController>
     public void UpdateNumOfEnemyKilled(int numOfEnemyKilled)
     {
         _numOfEnemyKilledText.text = numOfEnemyKilled.ToString();
+    }
+
+    public void ShowEndGameDetails(int curWave, int numOfEnemyKilled)
+    {
+        if (DataManager.Instance.GameData.HighestWave < curWave)
+        {
+            DataManager.Instance.GameData.HighestWave = curWave;
+        }
+        _endGameCurWaveText.text = $"Waves Survived: {curWave}";
+        _endGameHighestWaveText.text = $"Highest Wave: {DataManager.Instance.GameData.HighestWave}";
+        _endGameNumOfEnemyKilledText.text = $"Tanks Destroyed: {numOfEnemyKilled}";
+
+        int coinEarned = DataManager.Instance.GameData.Coin - coinStartGame;
+        _endGameCoinText.text = $"Coins Collected: {coinEarned}";
+
     }
 
     public void ShowWaveNotification()

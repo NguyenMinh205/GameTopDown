@@ -93,6 +93,7 @@ public class EnemyBase : MonoBehaviour, IGetHit
     {
         Debug.Log("Enemy die");
         PoolingManager.Despawn(this.gameObject);
+        AudioManager.Instance.PlayEnemyDieSound();
         GamePlayManager.Instance.SpawnExplosionTankAnim(this.transform.position);
         DataManager.Instance.GameData.Coin += _coinValue;
         GameUIController.Instance.UpdateCoin(DataManager.Instance.GameData.Coin);

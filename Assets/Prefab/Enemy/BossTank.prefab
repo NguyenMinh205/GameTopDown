@@ -177,7 +177,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 8454693629353756433, guid: ac1f3478ed22bd4448edf3e9d33112f6, type: 3}
   attackRange: 8.5
   bulletLifetime: 2
-  burstDelay: 0.1
+  burstDelay: 0.25
 --- !u!1 &4926122771231298069
 GameObject:
   m_ObjectHideFlags: 0

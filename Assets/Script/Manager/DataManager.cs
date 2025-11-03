@@ -25,6 +25,7 @@ public class DataManager : Singleton<DataManager>
 public class GameData
 {
     [SerializeField] private bool isFirstTimePlay;
+    [SerializeField] private int highestWave;
 
     //Audio
     [SerializeField] private float volumeMusic;
@@ -52,6 +53,7 @@ public class GameData
 
     #region GETTER/SETTER
     public bool IsFirstTimePlay { get => isFirstTimePlay; set => isFirstTimePlay = value; }
+    public int HighestWave { get => highestWave; set => highestWave = value; }
     public float VolumeMusic { get => volumeMusic; set => volumeMusic = value; }
     public float VolumeSFX { get => volumeSFX; set => volumeSFX = value; }
     public float Hp { get => hp; set => hp = value; }
@@ -71,6 +73,7 @@ public class GameData
     #endregion
 
     #region CONST VALUE
+    private const int defaultHighestWave = 0;
     private const float defaultVolume = 0.5f;
     private const float defaultSound = 0.5f;
     private const float defaultHP = 100;
@@ -96,6 +99,7 @@ public class GameData
     #region SAVE/LOAD DATA
     public void Load()
     {
+        highestWave = PlayerPrefs.GetInt("highestWave", defaultHighestWave);
         isFirstTimePlay = PlayerPrefs.GetInt("isFirstTimePlay", 0) == 1 ? true : false;
         volumeMusic = PlayerPrefs.GetFloat("volumeMusic", defaultVolume);
         volumeSFX = PlayerPrefs.GetFloat("volumeSFX", defaultSound);
@@ -116,6 +120,7 @@ public class GameData
 
     public void Save()
     {
+        PlayerPrefs.SetInt("highestWave", highestWave);
         PlayerPrefs.SetInt("isFirstTimePlay", isFirstTimePlay ? 1 : 0);
         PlayerPrefs.SetFloat("volumeMusic", volumeMusic);
         PlayerPrefs.SetFloat("volumeSFX", volumeSFX);

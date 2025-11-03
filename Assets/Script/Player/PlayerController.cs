@@ -134,6 +134,7 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
     {
         if (isInvincible) return;
 
+        AudioManager.Instance.PlayHitSound();
         CancelRegen();
 
         float remain = dmg;

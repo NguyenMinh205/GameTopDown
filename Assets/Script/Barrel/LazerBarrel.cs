@@ -16,6 +16,7 @@ public class LazerBarrel : BarrelBase
     {
         if (timer > 0 || isFiring || GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused) return;
 
+        AudioManager.Instance.PlayLaserShoot();
         StartCoroutine(ShootLazer());
         timer = attackCoolDown;
     }
