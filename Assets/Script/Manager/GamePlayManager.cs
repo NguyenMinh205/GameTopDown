@@ -124,8 +124,26 @@ public class GamePlayManager : Singleton<GamePlayManager>
         PoolingManager.Spawn(_explosionTankAnim, position, Quaternion.identity, _objectPool);
     }
 
+    public void ShowInstruction()
+    {
+        AudioManager.Instance.PlayPopupSound();
+        GameUIController.Instance.ShowInstruction(true);
+        GameUIController.Instance.SetupInstructionDetail();
+        _isGamePaused = true;
+        _playerController.PauseRegenShield();
+    }    
+
+    public void FinishInstruction()
+    {
+        AudioManager.Instance.PlayPopupSound();
+        GameUIController.Instance.ShowInstruction(false);
+        _isGamePaused = false;
+        _playerController.ResumeRegenShield();
+    }    
+
     public void ShowRewardEachWave()
     {
+        AudioManager.Instance.PlayPopupSound();
         _isChoosingReward = true;
         GameUIController.Instance.ShowRewardPopup(true);
         _rewardManager.GenerateReward();
@@ -134,6 +152,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     public void EndChooseReward()
     {
+        AudioManager.Instance.PlayPopupSound();
         _isChoosingReward = false;
         GameUIController.Instance.ShowRewardPopup(false);
         _playerController.ResumeRegenShield();

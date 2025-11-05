@@ -22,10 +22,8 @@ public abstract class ShootingEnemy : EnemyBase
         _wasInAttackRange = false;
     }
 
-    protected override void Update()
+    private void Update()
     {
-        base.Update();
-
         if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused || _player == null)
             return;
 
@@ -48,6 +46,7 @@ public abstract class ShootingEnemy : EnemyBase
         }
         else
         {
+            _shootTimer = 0f;
             FollowPlayer();
             RotateBarrelSmooth();
         }

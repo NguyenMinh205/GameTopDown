@@ -6,9 +6,8 @@ public class BoomTank : EnemyBase
 {
     [SerializeField] private float explodeRadius = 0.7f;
 
-    protected override void Update()
+    private void Update()
     {
-
         FollowPlayer();
     }
 
@@ -23,8 +22,10 @@ public class BoomTank : EnemyBase
                 h.GetHit(_dmgExplosion / 4);
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected override void OnCollisionEnter2D(Collision2D collision)
     {
+        base.OnCollisionEnter2D(collision);
+
         IGetHit isCanGetHit = collision.gameObject.GetComponent<IGetHit>();
 
         if (isCanGetHit == null || collision.gameObject.CompareTag("Enemy"))

@@ -45,10 +45,11 @@ public class GameUIController : Singleton<GameUIController>
 
     [Header("Instruction")]
     [SerializeField] private Image _instructionImage;
-    [SerializeField] private Button _leftButton;
-    [SerializeField] private Button _rightButton;
+    [SerializeField] private Button _skipButton;
     [SerializeField] private Button _confirmButton;
+    [SerializeField] private TextMeshProUGUI _confirmText;
     [SerializeField] private List<Sprite> _instructionSprites;
+    private int currentInstructionStep = 0;
 
     [Header("EndGame")]
     [SerializeField] private TextMeshProUGUI _endGameCurWaveText;
@@ -174,6 +175,46 @@ public class GameUIController : Singleton<GameUIController>
     public void UpdateNumOfEnemyKilled(int numOfEnemyKilled)
     {
         _numOfEnemyKilledText.text = numOfEnemyKilled.ToString();
+    }
+    
+    public void ShowInstruction(bool val)
+    {
+        if (val)
+        {
+            _instructionPopupParent.SetActive(true);
+            _instructionPopUp.transform.DOScale(Vector3.one, 0.25f)
+                .From(Vector3.zero)
+                .SetEase(Ease.OutBack);
+        }
+        else
+        {
+            _instructionPopUp.transform.DOScale(Vector3.zero, 0.25f)
+                .SetEase(Ease.InBack)
+                .OnComplete(() => _instructionPopupParent.SetActive(false));
+        }
+    }
+
+    public void SetupInstructionDetail()
+    {
+        currentInstructionStep = 0;
+        UpdateInstructionDetail();
+        _skipButton.gameObject.SetActive(true);
+        _confirmButton.gameObject.SetActive(true);
+        _confirmText.text = "Next!";
+        _confirmButton.onClick.RemoveAllListeners();
+        _confirmButton.onClick.AddListener(() => { currentInstructionStep++; UpdateInstructionDetail(); } );
+    }
+
+    public void UpdateInstructionDetail()
+    {
+        _instructionImage.sprite = _instructionSprites[currentInstructionStep];
+        if (currentInstructionStep == _instructionSprites.Count - 1)
+        {
+            _confirmText.text = "I'm understand!";
+            _skipButton.gameObject.SetActive(false);
+            _confirmButton.onClick.RemoveAllListeners();
+            _confirmButton.onClick.AddListener(() => { GamePlayManager.Instance.FinishInstruction(); });
+        }
     }
 
     public void ShowEndGameDetails(int curWave, int numOfEnemyKilled)

@@ -19,3 +19,4 @@ MonoBehaviour:
   DmgExplosion: 10
   RateOfFire: 0
   Dmg: 0
+  CoinValue: 2

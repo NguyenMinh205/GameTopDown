@@ -173,6 +173,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 2
+  avoidanceAngle: 30
+  avoidanceDuration: 0.5
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 384
   barrel: {fileID: 8591975928261566934}
   bulletPrefab: {fileID: 8454693629353756433, guid: ac1f3478ed22bd4448edf3e9d33112f6, type: 3}
   attackRange: 8.5

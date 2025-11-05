@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +19,15 @@ public class EnemyBase : MonoBehaviour, IGetHit
     [SerializeField] private EnemyType _enemyType;
     public EnemyType EnemyType => _enemyType;
 
+    [Header("Obstacle Avoidance Settings")]
+    [SerializeField] private float avoidanceAngle = 45f; // Góc xoay tránh (45 độ)
+    [SerializeField] private float avoidanceDuration = 0.5f; // Thời gian đi theo hướng tránh (0.5s)
+    [SerializeField] private LayerMask obstacleLayer; // Layer cho obstacle (border + enemy khác)
+
+    private bool _isAvoiding = false;
+    private Vector2 _avoidanceDirection;
+    private Coroutine _avoidanceCoroutine;
+
     public virtual void Init(float hp, float armor, float dmpExplosion, float speed, float dmg, float rateOfFire, int coinVal)
     {
         this._hp = hp;
@@ -32,24 +41,18 @@ public class EnemyBase : MonoBehaviour, IGetHit
         _player = PlayerController.Instance.transform;
     }
 
-    protected virtual void Update()
-    {
-        if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused)
-        {
-            this._rb.velocity = Vector2.zero;
-            return;
-        }
-    }
-
     protected virtual void FixedUpdate()
     {
         if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused)
         {
-            this._rb.velocity = Vector2.zero;
+            _rb.velocity = Vector2.zero;
             return;
         }
+
         if (_rb != null)
+        {
             _rb.velocity = _movement * _speed;
+        }
     }
 
     public virtual void FollowPlayer()
@@ -60,22 +63,65 @@ public class EnemyBase : MonoBehaviour, IGetHit
             return;
         }
 
-        this._movement = (_player.position - this.transform.position).normalized;
+        Vector2 toPlayer = (_player.position - transform.position).normalized;
+
+        if (_isAvoiding)
+        {
+            _movement = _avoidanceDirection;
+        }
+        else
+        {
+            _movement = toPlayer;
+        }
+
         RotateTowards();
     }
 
     public void RotateTowards()
     {
-        Vector3 direction = (_player.transform.position - this.transform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
+        if (_player == null) return;
+
+        float angle = Mathf.Atan2(_movement.y, _movement.x) * Mathf.Rad2Deg + 90f;
         this.transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & obstacleLayer) == 0 ||
+            collision.gameObject == gameObject ||
+            collision.gameObject.CompareTag("Player"))
+        {
+            return;
+        }
+
+        if (!_isAvoiding)
+        {
+            _avoidanceCoroutine = null;
+            _avoidanceCoroutine = StartCoroutine(AvoidanceCoroutine());
+        }
+    }
+
+    private IEnumerator AvoidanceCoroutine()
+    {
+        _isAvoiding = true;
+
+        Vector2 forward = transform.up;
+        Vector2 toPlayer = (_player.position - transform.position).normalized;
+        float angleToPlayer = Vector2.SignedAngle(forward, toPlayer);
+        float rotationDirection = -Mathf.Sign(angleToPlayer);
+
+        _avoidanceDirection = Quaternion.Euler(0, 0, avoidanceAngle * rotationDirection) * forward.normalized;
+
+        yield return new WaitForSeconds(avoidanceDuration);
+
+        _isAvoiding = false;
     }
 
     public void GetHit(float dmg)
     {
         if (dmg - _armor > 0)
         {
-            this._hp -= dmg - _armor;
+            _hp -= dmg - _armor;
             _armor = 0;
         }
         else
@@ -83,27 +129,24 @@ public class EnemyBase : MonoBehaviour, IGetHit
             _armor -= dmg;
         }
 
-        if (this._hp <= 0)
-        {
-            Die();
-        }
+        if (_hp <= 0) Die();
     }
 
     public void Die()
     {
         Debug.Log("Enemy die");
-        PoolingManager.Despawn(this.gameObject);
+        if (_avoidanceCoroutine != null)
+        {
+            StopCoroutine(_avoidanceCoroutine);
+            _avoidanceCoroutine = null;
+        }
+        PoolingManager.Despawn(gameObject);
         AudioManager.Instance.PlayEnemyDieSound();
-        GamePlayManager.Instance.SpawnExplosionTankAnim(this.transform.position);
+        GamePlayManager.Instance.SpawnExplosionTankAnim(transform.position);
         DataManager.Instance.GameData.Coin += _coinValue;
         GameUIController.Instance.UpdateCoin(DataManager.Instance.GameData.Coin);
         ObserverManager<GameState>.PostEvent(GameState.OnEnemyDie, this);
     }
 }
 
-public enum EnemyType
-{
-    Boom,
-    Shooter,
-    Boss,
-}
+public enum EnemyType { Boom, Shooter, Boss }
