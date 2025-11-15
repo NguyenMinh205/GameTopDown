@@ -18,9 +18,10 @@ public class EnemyBase : MonoBehaviour, IGetHit
 
     [SerializeField] private EnemyType _enemyType;
     public EnemyType EnemyType => _enemyType;
+    [SerializeField] private Animator _animator;
 
     [Header("Obstacle Avoidance Settings")]
-    [SerializeField] private float avoidanceAngle = 45f; // Góc xoay tránh (45 độ)
+    [SerializeField] private float avoidanceAngle = 25f; // Góc xoay tránh (45 độ)
     [SerializeField] private float avoidanceDuration = 0.5f; // Thời gian đi theo hướng tránh (0.5s)
     [SerializeField] private LayerMask obstacleLayer; // Layer cho obstacle (border + enemy khác)
 
@@ -119,6 +120,7 @@ public class EnemyBase : MonoBehaviour, IGetHit
 
     public void GetHit(float dmg)
     {
+        _animator.SetTrigger("IsHit");
         if (dmg - _armor > 0)
         {
             _hp -= dmg - _armor;

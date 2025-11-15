@@ -10,6 +10,7 @@ public class BombBullet : BulletBase
         base.Hit(target);
         AudioManager.Instance.PlayExplosionSound();
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
+        GamePlayManager.Instance.SpawnExplosionBullletAnim(transform.position);
         foreach (Collider2D c in colliders)
         {
             Debug.LogError("check");

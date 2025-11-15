@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ae12a719399964cab9f0be6ae7cb0a, type: 3}
   m_Name: Damage_Reward
   m_EditorClassIdentifier: 
-  rewardType: 0
+  rewardType: 2
   icon: {fileID: 21300000, guid: 5f2c695fb93a19d469878cdaacb85908, type: 3}
   rewardName: Damage Focus
   rewardDescription: Increases Attack Stat by 10%.

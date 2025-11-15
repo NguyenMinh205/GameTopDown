@@ -100,7 +100,7 @@ public class GameData
     public void Load()
     {
         highestWave = PlayerPrefs.GetInt("highestWave", defaultHighestWave);
-        isFirstTimePlay = PlayerPrefs.GetInt("isFirstTimePlay", 0) == 1 ? true : false;
+        isFirstTimePlay = PlayerPrefs.GetInt("isFirstTimePlay", 1) == 1 ? true : false;
         volumeMusic = PlayerPrefs.GetFloat("volumeMusic", defaultVolume);
         volumeSFX = PlayerPrefs.GetFloat("volumeSFX", defaultSound);
         hp = PlayerPrefs.GetFloat("hp", defaultHP);

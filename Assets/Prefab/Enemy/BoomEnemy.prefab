@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8597693919088963452}
   - component: {fileID: 2484373865784311140}
   - component: {fileID: 4123941753907515527}
+  - component: {fileID: -4872830673775899715}
   m_Layer: 7
   m_Name: BoomEnemy
   m_TagString: Enemy
@@ -178,3 +179,24 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 384
   explodeRadius: 0.7
+--- !u!95 &-4872830673775899715
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3698912000802370695}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 696ae84a4278a9847a797bd76e7bf0b0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

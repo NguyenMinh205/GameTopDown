@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ae12a719399964cab9f0be6ae7cb0a, type: 3}
   m_Name: Explosive_Shot_Reward
   m_EditorClassIdentifier: 
-  rewardType: 3
+  rewardType: 5
   icon: {fileID: 21300000, guid: 5015757dcb598ea489c71d2193395d69, type: 3}
   rewardName: Explosive Shot
   rewardDescription: Launches an explosive bullet that deals AoE damage.
+  valueBuff: 0

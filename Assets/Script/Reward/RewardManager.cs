@@ -14,6 +14,8 @@ public class RewardManager : MonoBehaviour
 
     List<RewardSO> currentRewards = new List<RewardSO>();
 
+    private const int numOfRewards = 3;
+
     public void GenerateReward()
     {
         currentRewards.Clear();
@@ -31,12 +33,10 @@ public class RewardManager : MonoBehaviour
             return;
         }
 
-        int numToSelect = Mathf.Min(rewardDetails.Count, sourceRewards.Count);
-
         List<int> indices = Enumerable.Range(0, sourceRewards.Count).ToList();
         Shuffle(indices);
 
-        for (int i = 0; i < numToSelect; i++)
+        for (int i = 0; i < numOfRewards; i++)
         {
             int originalIndex = indices[i];
             currentRewards.Add(sourceRewards[originalIndex]);
@@ -44,7 +44,7 @@ public class RewardManager : MonoBehaviour
 
         for (int i = 0; i < rewardDetails.Count; i++)
         {
-            if (i < numToSelect)
+            if (i < numOfRewards)
             {
                 RewardSO selectedReward = currentRewards[i];
 
@@ -102,6 +102,16 @@ public class RewardManager : MonoBehaviour
                 break;
             case RewardType.AttackReward:
                 GamePlayManager.Instance.PlayerController.AttackStat += GamePlayManager.Instance.PlayerController.AttackStat * reward.valueBuff;
+                break;
+            case RewardType.RateOfFireReward:
+                BarrelBase barrel = GamePlayManager.Instance.PlayerController.BarrelController.CurTypeOfBarrel;
+                if (barrel != null)
+                {
+                    barrel.AttackCoolDown -= barrel.AttackCoolDown * reward.valueBuff;
+                }    
+                break;
+            case RewardType.SpeedTankReward:
+                GamePlayManager.Instance.PlayerController.Speed += GamePlayManager.Instance.PlayerController.Speed * reward.valueBuff;
                 break;
             case RewardType.WeaponReward:
                 GamePlayManager.Instance.PlayerController.ChangeBarrel(reward.rewardName);

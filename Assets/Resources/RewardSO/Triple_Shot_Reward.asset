@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ae12a719399964cab9f0be6ae7cb0a, type: 3}
   m_Name: Triple_Shot_Reward
   m_EditorClassIdentifier: 
-  rewardType: 3
+  rewardType: 5
   icon: {fileID: 21300000, guid: f74801ae92d928e4cbdc59e9f68a095e, type: 3}
   rewardName: Multiple Shot
   rewardDescription: Fires 3 (default) bullets with a single attack.
+  valueBuff: 0

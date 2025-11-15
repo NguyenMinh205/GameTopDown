@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -421042734828176958}
   - component: {fileID: -2049729518610754193}
   - component: {fileID: 1886105568119565914}
+  - component: {fileID: 8819826433584544296}
   m_Layer: 7
   m_Name: BossTank
   m_TagString: Enemy
@@ -183,6 +184,27 @@ MonoBehaviour:
   attackRange: 8.5
   bulletLifetime: 2
   burstDelay: 0.25
+--- !u!95 &8819826433584544296
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3185428831687428445}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 13abbcfd38f06c64098423eb886e0486, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4926122771231298069
 GameObject:
   m_ObjectHideFlags: 0

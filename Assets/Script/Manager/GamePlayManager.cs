@@ -31,6 +31,8 @@ public class GamePlayManager : Singleton<GamePlayManager>
     public GameObject ExplosionShotAnim => _explosionShotAnim;
     [SerializeField] private GameObject _explosionTankAnim;
     public GameObject ExplosionTankAnim => _explosionTankAnim;
+    [SerializeField] private GameObject _explosionBulletAnim;
+    public GameObject ExplosionBulletAnim => _explosionBulletAnim;
     [SerializeField] private Transform _objectPool;
 
     private int _currentWave = 1;
@@ -49,6 +51,11 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     private void Start()
     {
+        if (DataManager.Instance.GameData.IsFirstTimePlay)
+        {
+            ShowInstruction();
+            DataManager.Instance.GameData.IsFirstTimePlay = false;
+        }    
         AudioManager.Instance.PlayMusicInGame();
         StartNewGame();
     }
@@ -122,6 +129,11 @@ public class GamePlayManager : Singleton<GamePlayManager>
     public void SpawnExplosionTankAnim(Vector3 position)
     {
         PoolingManager.Spawn(_explosionTankAnim, position, Quaternion.identity, _objectPool);
+    }
+
+    public void SpawnExplosionBullletAnim(Vector3 position)
+    {
+        PoolingManager.Spawn(_explosionBulletAnim, position, Quaternion.identity, _objectPool);
     }
 
     public void ShowInstruction()

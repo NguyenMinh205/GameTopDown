@@ -20,6 +20,7 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
     public float CurHP { get => curHP; set => curHP = value; }
     public float CurArmor { get => curArmor; set => curArmor = value; }
     public float AttackStat { get => attackStat; set => attackStat = value; }
+    public float Speed { get => speed; set => speed = value; }
 
     private Rigidbody2D playerRB;
     private bool isPaused = false;

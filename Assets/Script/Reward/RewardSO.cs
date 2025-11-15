@@ -18,5 +18,7 @@ public enum RewardType
     HPReward,
     ShieldReward,
     AttackReward,
+    RateOfFireReward,
+    SpeedTankReward,
     WeaponReward,
 }

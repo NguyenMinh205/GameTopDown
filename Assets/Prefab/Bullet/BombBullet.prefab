@@ -176,4 +176,4 @@ MonoBehaviour:
   notTargetLayer:
     serializedVersion: 2
     m_Bits: 64
-  explosionRadius: 5
+  explosionRadius: 1.75
