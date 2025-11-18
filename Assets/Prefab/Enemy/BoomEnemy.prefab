@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 0
+  _animator: {fileID: -4872830673775899715}
   avoidanceAngle: 30
   avoidanceDuration: 0.5
   obstacleLayer:

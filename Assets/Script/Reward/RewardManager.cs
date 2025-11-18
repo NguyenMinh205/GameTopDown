@@ -76,10 +76,12 @@ public class RewardManager : MonoBehaviour
 
     public void ChooseReward(int index)
     {
+        if (!GamePlayManager.Instance.IsChoosingReward) return;
+        GamePlayManager.Instance.IsChoosingReward = false;
         RewardSO chosenReward;
         chosenReward = currentRewards[index];
         ApplyRewardToPlayer(chosenReward);
-        DOVirtual.DelayedCall(0.5f, () =>
+        DOVirtual.DelayedCall(0.2f, () =>
         {
             GamePlayManager.Instance.EndChooseReward();
         });
@@ -98,7 +100,7 @@ public class RewardManager : MonoBehaviour
             case RewardType.ShieldReward:
                 GamePlayManager.Instance.PlayerController.MaxArmor += GamePlayManager.Instance.PlayerController.MaxArmor * reward.valueBuff;
                 GamePlayManager.Instance.PlayerController.CurArmor += GamePlayManager.Instance.PlayerController.MaxArmor * reward.valueBuff;
-                GameUIController.Instance?.UpdateHPBar(GamePlayManager.Instance.PlayerController.CurArmor, GamePlayManager.Instance.PlayerController.MaxArmor);
+                GameUIController.Instance?.UpdateShieldBar(GamePlayManager.Instance.PlayerController.CurArmor, GamePlayManager.Instance.PlayerController.MaxArmor);
                 break;
             case RewardType.AttackReward:
                 GamePlayManager.Instance.PlayerController.AttackStat += GamePlayManager.Instance.PlayerController.AttackStat * reward.valueBuff;
