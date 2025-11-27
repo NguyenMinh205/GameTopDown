@@ -16,12 +16,15 @@ public class MenuUIManager : MonoBehaviour
     [Header("Popup")]
     [SerializeField] private GameObject popupSetting;
     [SerializeField] private GameObject popupShop;
+    [SerializeField] private GameObject popupAchievement;
 
     [Header("Popup Manager")]
     [SerializeField] private UISetting settingManager;
     public UISetting SettingManager => settingManager;
     [SerializeField] private UIShop shopManager;
     public UIShop ShopManager => shopManager;
+    [SerializeField] private UIAchievement achievementManager;
+    public UIAchievement AchievementManager => achievementManager;
 
     private void Start()
     {
@@ -31,6 +34,7 @@ public class MenuUIManager : MonoBehaviour
         btnShop.GetComponent<Button>().onClick.AddListener(OnClickShop);
         settingManager.gameObject.SetActive(false);
         shopManager.gameObject.SetActive(false);
+        achievementManager.gameObject.SetActive(false);
         AudioManager.Instance.PlayMusicInMenu();
     }
 
@@ -72,6 +76,17 @@ public class MenuUIManager : MonoBehaviour
             .SetEase(Ease.OutBack);
     }
 
+    public void OnClickAchievement()
+    {
+        AudioManager.Instance.PlayPopupSound();
+        achievementManager.Init();
+        achievementManager.gameObject.SetActive(true);
+        popupSetting.transform.DOKill();
+        popupAchievement.transform.localScale = Vector3.zero;
+        popupAchievement.transform.DOScale(Vector3.one, 0.25f)
+            .SetEase(Ease.OutBack);
+    }
+
     public void CloseSetting()
     {
         AudioManager.Instance.PlayButtonClick();
@@ -86,6 +101,18 @@ public class MenuUIManager : MonoBehaviour
         popupSetting.transform.DOKill();
         popupShop.transform.DOScale(Vector3.zero, 0.25f)
             .SetEase(Ease.InBack).OnComplete(() => shopManager.gameObject.SetActive(false));
+    }
+
+    public void CloseAchievement()
+    {
+        AudioManager.Instance.PlayButtonClick();
+        popupSetting.transform.DOKill();
+        popupAchievement.transform.DOScale(Vector3.zero, 0.25f)
+            .SetEase(Ease.InBack).OnComplete(() =>
+            {
+                achievementManager.gameObject.SetActive(false);
+                achievementManager.ClearAllAchievementUI();
+            });
     }
 
     private void OnDisable()

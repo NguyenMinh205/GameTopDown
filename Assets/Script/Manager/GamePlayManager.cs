@@ -73,6 +73,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
         _currentWave = 0;
         _buffController.Init();
         GameUIController.Instance.SetupStartGame();
+        ObserverManager<AchievementEvents>.PostEvent(AchievementEvents.OnGameStarted);
         StartNewWave();
     }
 
@@ -99,6 +100,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
         GameUIController.Instance.ShowWaveText(_currentWave);
         GameUIController.Instance.ShowWaveNotification();
         AudioManager.Instance.PlayStartWaveSound();
+        ObserverManager<AchievementEvents>.PostEvent(AchievementEvents.OnWaveReached, _currentWave);
     }
 
     public void UseBuff(BuffType buffType)
@@ -202,6 +204,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
         AudioManager.Instance.PlayEndGameSound();
         _enemyManager.StopAllCoroutines();
         _enemyManager.ClearAllEnemy();
+        ObserverManager<AchievementEvents>.PostEvent(AchievementEvents.OnGameEnded);
     }
 
     public void BackHome()

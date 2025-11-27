@@ -117,6 +117,7 @@ public class UIShop : MonoBehaviour
                 countLabel.text = newCount.ToString();
             }
 
+            ObserverManager<AchievementEvents>.PostEvent(AchievementEvents.OnCoinsSpent, price);
             AudioManager.Instance.PlayUseCoinSound();
         }
         else

@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58cc25668ec369240b61b831e479ebdb, type: 3}
-  m_Name: WaveBoom
+  m_Script: {fileID: 11500000, guid: 2cc328863eee62f4cbd9be7f52d38974, type: 3}
+  m_Name: EnemiesKilledInGame_Achievement 1
   m_EditorClassIdentifier: 
-  enemies:
-  - enemyType: 0
-    numOfEnemy: 3
+  ID: kill_in_wave_200
+  Title: Dominating
+  Description: Eliminate 200 enemies in a single run (+2,000 coins)
+  Type: 1
+  TargetValue: 200
+  CoinReward: 2000
+  Achieved: 0

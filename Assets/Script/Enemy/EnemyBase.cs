@@ -148,6 +148,7 @@ public class EnemyBase : MonoBehaviour, IGetHit
         DataManager.Instance.GameData.Coin += _coinValue;
         GameUIController.Instance.UpdateCoin(DataManager.Instance.GameData.Coin);
         ObserverManager<GameState>.PostEvent(GameState.OnEnemyDie, this);
+        ObserverManager<AchievementEvents>.PostEvent(AchievementEvents.OnEnemyKilled, 1);
     }
 }
 

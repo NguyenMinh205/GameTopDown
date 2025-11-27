@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58cc25668ec369240b61b831e479ebdb, type: 3}
-  m_Name: WaveBoom
+  m_Script: {fileID: 11500000, guid: 2cc328863eee62f4cbd9be7f52d38974, type: 3}
+  m_Name: CoinSpent_Achievement 2
   m_EditorClassIdentifier: 
-  enemies:
-  - enemyType: 0
-    numOfEnemy: 3
+  ID: coins_spent_10000
+  Title: The Tycoon
+  Description: Spend 10,000 coins (+2000 coins)
+  Type: 3
+  TargetValue: 10000
+  CoinReward: 2000
+  Achieved: 0

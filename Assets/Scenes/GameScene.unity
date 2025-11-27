@@ -1841,6 +1841,18 @@ MonoBehaviour:
   attackStat: 0
   speed: 7.5
   speedRotate: 90
+  tankBody: {fileID: 376365944}
+  tankBarrel: {fileID: 2068158710}
+  skinTanks:
+  - tank: {fileID: 21300000, guid: 40fdc3e5843c6a146a79cee39550f2e8, type: 3}
+    body: {fileID: 21300000, guid: 80c8f8206c6cff14398156641a2a3e60, type: 3}
+    barrel: {fileID: 21300000, guid: 88f007dbc1e751f4787dd061c393628a, type: 3}
+  - tank: {fileID: 21300000, guid: c7f2d64f9033f0d4fa7762fb626b41be, type: 3}
+    body: {fileID: 21300000, guid: f1370aa400ed85a47b9246f29f2277b2, type: 3}
+    barrel: {fileID: 21300000, guid: 5d2fcd95bc954bf4197cb4d6937650d7, type: 3}
+  - tank: {fileID: 21300000, guid: 983df0e7745447d46a6ab58d447e326c, type: 3}
+    body: {fileID: 21300000, guid: d4f94eb2f77013340bc2c28c0a95bfda, type: 3}
+    barrel: {fileID: 21300000, guid: c82227aab4e1fc04f8d4fad881021b24, type: 3}
   shieldRegenDelay: 5
   shieldRegenPercentPerSec: 0.05
   regenTick: 0.1
@@ -73146,7 +73158,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -73702,9 +73714,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '10000
-
-'
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}

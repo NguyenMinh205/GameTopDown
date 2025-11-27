@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -70,6 +71,7 @@ public class UITankDetail : MonoBehaviour
         if (DataManager.Instance.GameData.Coin >= DataManager.Instance.GameData.PriceUpHP)
         {
             DataManager.Instance.GameData.Coin -= DataManager.Instance.GameData.PriceUpHP;
+            ObserverManager<AchievementEvents>.PostEvent(AchievementEvents.OnCoinsSpent, DataManager.Instance.GameData.PriceUpHP);
             DataManager.Instance.GameData.Hp += DataManager.Instance.GameData.HpUpgradeValue;
             DataManager.Instance.GameData.HpUpgradeValue += DataManager.Instance.GameData.HpUpgradeIncreaseValue;
             DataManager.Instance.GameData.PriceUpHP += DataManager.Instance.GameData.DefaultUpgradePrice;
@@ -84,9 +86,10 @@ public class UITankDetail : MonoBehaviour
 
     public void UpgradeShield()
     {
-        if (DataManager.Instance.GameData.Coin >= int.Parse(_priceUpShieldTxt.text))
+        if (DataManager.Instance.GameData.Coin >= DataManager.Instance.GameData.PriceUpShield)
         {
-            DataManager.Instance.GameData.Coin -= int.Parse(_priceUpShieldTxt.text);
+            DataManager.Instance.GameData.Coin -= DataManager.Instance.GameData.PriceUpShield;
+            ObserverManager<AchievementEvents>.PostEvent(AchievementEvents.OnCoinsSpent, DataManager.Instance.GameData.PriceUpShield);
             DataManager.Instance.GameData.Shield += DataManager.Instance.GameData.ShieldUpgradeValue;
             DataManager.Instance.GameData.ShieldUpgradeValue += DataManager.Instance.GameData.ShieldUpgradeIncreaseValue;
             DataManager.Instance.GameData.PriceUpShield += DataManager.Instance.GameData.DefaultUpgradePrice;
@@ -101,9 +104,10 @@ public class UITankDetail : MonoBehaviour
 
     public void UpgradeAttackStat()
     {
-        if (DataManager.Instance.GameData.Coin >= int.Parse(_priceUpAttackStatTxt.text))
+        if (DataManager.Instance.GameData.Coin >= DataManager.Instance.GameData.PriceUpAttackStat)
         {
-            DataManager.Instance.GameData.Coin -= int.Parse(_priceUpAttackStatTxt.text);
+            DataManager.Instance.GameData.Coin -= DataManager.Instance.GameData.PriceUpAttackStat;
+            ObserverManager<AchievementEvents>.PostEvent(AchievementEvents.OnCoinsSpent, DataManager.Instance.GameData.PriceUpAttackStat);
             DataManager.Instance.GameData.AttackStat += DataManager.Instance.GameData.AttackStatUpgradeValue;
             DataManager.Instance.GameData.AttackStatUpgradeValue += DataManager.Instance.GameData.AttackStatUpgradeIncreaseValue;
             DataManager.Instance.GameData.PriceUpAttackStat += DataManager.Instance.GameData.DefaultUpgradePrice;

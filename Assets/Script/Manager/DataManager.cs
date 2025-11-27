@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -51,6 +52,13 @@ public class GameData
     [SerializeField] private int _shieldUpgradeValue;
     [SerializeField] private int _attackStatUpgradeValue;
 
+    //Achievement
+    [SerializeField] private List<string> unlockedAchievementIDs = new List<string>();
+    [SerializeField] private int _killsInCurrentGame;
+    [SerializeField] private int _totalKillsLifetime;
+    [SerializeField] private int _totalCoinsSpent;
+    [SerializeField] private int _totalGamesPlayed;
+
     #region GETTER/SETTER
     public bool IsFirstTimePlay { get => isFirstTimePlay; set => isFirstTimePlay = value; }
     public int HighestWave { get => highestWave; set => highestWave = value; }
@@ -70,6 +78,11 @@ public class GameData
     public int HpUpgradeValue { get => _hpUpgradeValue; set => _hpUpgradeValue = value; }
     public int ShieldUpgradeValue { get => _shieldUpgradeValue; set => _shieldUpgradeValue = value; }
     public int AttackStatUpgradeValue { get => _attackStatUpgradeValue; set => _attackStatUpgradeValue = value; }
+    public List<string> UnlockedAchievementIDs { get => unlockedAchievementIDs; set => unlockedAchievementIDs = value; }
+    public int KillsInCurrentGame { get => _killsInCurrentGame; set => _killsInCurrentGame = value; }
+    public int TotalKillsLifetime { get => _totalKillsLifetime; set => _totalKillsLifetime = value; }
+    public int TotalCoinsSpent { get => _totalCoinsSpent; set => _totalCoinsSpent = value; }
+    public int TotalGamesPlayed { get => _totalGamesPlayed; set => _totalGamesPlayed = value; }
     #endregion
 
     #region CONST VALUE
@@ -85,6 +98,10 @@ public class GameData
     private const int defaultNumOfBuff3 = 0;
     private const int defaultUpgradePrice = 100;
     private const int defaultUpgradeHpValue = 100;
+    private const int defaultKillsInCurrentGame = 0;
+    private const int defaultTotalKillsLifetime = 0;
+    private const int defaultTotalCoinsSpent = 0;
+    private const int defaultTotalGamesPlayed = 0;
     private const int defaultUpgradeShieldValue = 20;
     private const int defaultUpgradeAttackStatValue = 1;
     public int DefaultUpgradePrice => defaultUpgradePrice;
@@ -94,6 +111,26 @@ public class GameData
     public int ShieldUpgradeIncreaseValue => shieldUpgradeIncreaseValue;
     private const int attackStatUpgradeIncreaseValue = 1;
     public int AttackStatUpgradeIncreaseValue => attackStatUpgradeIncreaseValue;
+    #endregion
+
+    #region Method Helper
+    public bool IsAchievementUnlocked(string id)
+    {
+        return unlockedAchievementIDs.Contains(id);
+    }
+
+    public void UnlockAchievement(string id)
+    {
+        if (!unlockedAchievementIDs.Contains(id))
+        {
+            unlockedAchievementIDs.Add(id);
+        }
+    }
+
+    public void ResetKillsInCurrentGame()
+    {
+        _killsInCurrentGame = 0;
+    }
     #endregion
 
     #region SAVE/LOAD DATA
@@ -116,6 +153,12 @@ public class GameData
         _hpUpgradeValue = PlayerPrefs.GetInt("HpUpgradeValue", defaultUpgradeHpValue);
         _shieldUpgradeValue = PlayerPrefs.GetInt("ShieldUpgradeValue", defaultUpgradeShieldValue);
         _attackStatUpgradeValue = PlayerPrefs.GetInt("AttackStatUpgradeValue", defaultUpgradeAttackStatValue);
+        _killsInCurrentGame = PlayerPrefs.GetInt("killsInCurrentGame", defaultKillsInCurrentGame);
+        _totalKillsLifetime = PlayerPrefs.GetInt("totalKillsLifetime", defaultTotalKillsLifetime);
+        _totalCoinsSpent = PlayerPrefs.GetInt("totalCoinsSpent", defaultTotalCoinsSpent);
+        _totalGamesPlayed = PlayerPrefs.GetInt("totalGamesPlayed", defaultTotalGamesPlayed);
+        string unlockedStr = PlayerPrefs.GetString("unlockedAchievementIDs", "");
+        unlockedAchievementIDs = string.IsNullOrEmpty(unlockedStr) ? new List<string>() : unlockedStr.Split(',').ToList();
     }
 
     public void Save()
@@ -137,6 +180,11 @@ public class GameData
         PlayerPrefs.SetInt("HpUpgradeValue", _hpUpgradeValue);
         PlayerPrefs.SetInt("ShieldUpgradeValue", _shieldUpgradeValue);
         PlayerPrefs.SetInt("AttackStatUpgradeValue", _attackStatUpgradeValue);
+        PlayerPrefs.SetInt("killsInCurrentGame", _killsInCurrentGame);
+        PlayerPrefs.SetInt("totalKillsLifetime", _totalKillsLifetime);
+        PlayerPrefs.SetInt("totalCoinsSpent", _totalCoinsSpent);
+        PlayerPrefs.SetInt("totalGamesPlayed", _totalGamesPlayed);
+        PlayerPrefs.SetString("unlockedAchievementIDs", string.Join(",", unlockedAchievementIDs));
         PlayerPrefs.Save();
     }
     #endregion

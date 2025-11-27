@@ -11,6 +11,9 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
     [SerializeField] private float attackStat;
     [SerializeField] private float speed;
     [SerializeField] private float speedRotate;
+    [SerializeField] private SpriteRenderer tankBody;
+    [SerializeField] private SpriteRenderer tankBarrel;
+    [SerializeField] private List<SkinTank> skinTanks = new List<SkinTank>();
 
     private float curHP;
     private float curArmor;
@@ -56,6 +59,9 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
         this.attackStat = DataManager.Instance.GameData.AttackStat; 
         curHP = maxHP; 
         curArmor = maxArmor;
+        int indexSkin = DataManager.Instance.GameData.SkinIndex;
+        tankBody.sprite = skinTanks[indexSkin].body;
+        tankBarrel.sprite = skinTanks[indexSkin].barrel;
         regenVersion = 0;
         ScheduleRegen();
 

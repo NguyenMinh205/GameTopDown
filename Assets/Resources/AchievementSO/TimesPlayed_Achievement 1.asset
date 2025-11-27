@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58cc25668ec369240b61b831e479ebdb, type: 3}
-  m_Name: WaveBoom
+  m_Script: {fileID: 11500000, guid: 2cc328863eee62f4cbd9be7f52d38974, type: 3}
+  m_Name: TimesPlayed_Achievement 1
   m_EditorClassIdentifier: 
-  enemies:
-  - enemyType: 0
-    numOfEnemy: 3
+  ID: games_played_20
+  Title: Master
+  Description: Complete the game 20 times. (+1,000 coins)
+  Type: 4
+  TargetValue: 20
+  CoinReward: 1000
+  Achieved: 0
