@@ -73,7 +73,7 @@ public class PlayerController : Singleton<PlayerController>, IGetHit
 
     private void Update()
     {
-        if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused)
+        if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused || GamePlayManager.Instance.IsInstructionShown)
         {
             this.playerRB.velocity = Vector2.zero;
             return;

@@ -46,6 +46,12 @@ public class GamePlayManager : Singleton<GamePlayManager>
         get { return _isChoosingReward; }
         set { _isChoosingReward = value; }
     }
+    private bool _isInstructionShown = false;
+    public bool IsInstructionShown
+    {
+        get { return _isInstructionShown; }
+        set { _isInstructionShown = value; }
+    }
 
     protected override void Awake()
     {
@@ -95,7 +101,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     public void StartNewWave()
     {
-        if (_isGamePaused) return;
+        if (_isGamePaused || _isInstructionShown) return;
         _currentWave++;
         GameUIController.Instance.ShowWaveText(_currentWave);
         GameUIController.Instance.ShowWaveNotification();
@@ -148,7 +154,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
         AudioManager.Instance.PlayPopupSound();
         GameUIController.Instance.ShowInstruction(true);
         GameUIController.Instance.SetupInstructionDetail();
-        _isGamePaused = true;
+        _isInstructionShown = true;
         _playerController.PauseRegenShield();
     }    
 
@@ -156,7 +162,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
     {
         AudioManager.Instance.PlayPopupSound();
         GameUIController.Instance.ShowInstruction(false);
-        _isGamePaused = false;
+        _isInstructionShown = false;
         _playerController.ResumeRegenShield();
     }    
 

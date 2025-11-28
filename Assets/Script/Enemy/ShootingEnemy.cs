@@ -24,7 +24,7 @@ public abstract class ShootingEnemy : EnemyBase
 
     private void Update()
     {
-        if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused || _player == null)
+        if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused || GamePlayManager.Instance.IsInstructionShown || _player == null)
             return;
 
         float distSqr = (transform.position - _player.position).sqrMagnitude;

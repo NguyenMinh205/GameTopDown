@@ -44,7 +44,7 @@ public class EnemyBase : MonoBehaviour, IGetHit
 
     protected virtual void FixedUpdate()
     {
-        if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused)
+        if (GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused || GamePlayManager.Instance.IsInstructionShown)
         {
             _rb.velocity = Vector2.zero;
             return;

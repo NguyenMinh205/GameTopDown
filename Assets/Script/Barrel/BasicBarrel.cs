@@ -6,7 +6,7 @@ public class BasicBarrel : BarrelBase
 {
     public override void Fire()
     {
-        if (timer > 0 || GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused) return;
+        if (timer > 0 || GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused || GamePlayManager.Instance.IsInstructionShown) return;
         _muzzleFlash.SetActive(true);
         AudioManager.Instance.PlayShootSound();
 

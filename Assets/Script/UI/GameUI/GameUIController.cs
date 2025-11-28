@@ -91,12 +91,20 @@ public class GameUIController : Singleton<GameUIController>
 
     public void UpdateHPBar(float currentHP, float maxHP)
     {
+        if (currentHP <= 0)
+        {
+            currentHP = 0;
+        }
         _hpBar.fillAmount = currentHP / maxHP;
         _hpVal.text = $"{Math.Round(currentHP, 1)}/{Math.Round(maxHP, 1)}";
     }
 
     public void UpdateShieldBar(float currentShield, float maxShield)
     {
+        if (currentShield <= 0)
+        {
+            currentShield = 0;
+        }
         _shieldBar.fillAmount = currentShield / maxShield;
         _shieldVal.text = $"{Math.Round(currentShield, 1)}/{Math.Round(maxShield, 1)}";
     }

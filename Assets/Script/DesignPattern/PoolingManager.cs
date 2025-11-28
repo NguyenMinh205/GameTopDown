@@ -97,6 +97,10 @@ public class Pool // Lớp cơ sở của Pooling
                 return newObject; // Trả về gameObject được sinh ra
             }
             newObject = listGameObject.Pop(); // Lấy GameObject từ List GameObject 
+            if (newObject == null) // Skip nếu object đã bị destroy (Unity treats destroyed as == null)
+            {
+                continue; // Pop tiếp object khác hoặc instantiate mới nếu hết
+            }
             newObject.transform.SetPositionAndRotation(position, quaternion); // Set lại vị trí và góc độ đồng thời set lại gameobject chứa newObject
             newObject.transform.parent = parent;
             newObject.SetActive(true); //Tái kích hoạt nó
@@ -112,6 +116,7 @@ public class Pool // Lớp cơ sở của Pooling
 
     public void Despawn(GameObject gameObject)
     {
+        if (gameObject == null) return;
         gameObject.SetActive(false); // Tắt game obejct
         listGameObject.Push(gameObject); // Đẩy game object vào danh sách object
     }

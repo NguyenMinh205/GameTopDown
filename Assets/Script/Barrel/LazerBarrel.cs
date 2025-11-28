@@ -14,7 +14,7 @@ public class LazerBarrel : BarrelBase
 
     public override void Fire()
     {
-        if (timer > 0 || isFiring || GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused) return;
+        if (timer > 0 || isFiring || GamePlayManager.Instance.IsChoosingReward || GamePlayManager.Instance.IsGamePaused || GamePlayManager.Instance.IsInstructionShown) return;
 
         AudioManager.Instance.PlayLaserShoot();
         StartCoroutine(ShootLazer());
