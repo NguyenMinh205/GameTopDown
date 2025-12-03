@@ -94,12 +94,12 @@ public class RewardManager : MonoBehaviour
         {
             case RewardType.HPReward:
                 GamePlayManager.Instance.PlayerController.MaxHP += GamePlayManager.Instance.PlayerController.MaxHP * reward.valueBuff;
-                GamePlayManager.Instance.PlayerController.CurHP += GamePlayManager.Instance.PlayerController.MaxHP * reward.valueBuff;
+                GamePlayManager.Instance.PlayerController.CurHP += GamePlayManager.Instance.PlayerController.CurHP * reward.valueBuff;
                 GameUIController.Instance?.UpdateHPBar(GamePlayManager.Instance.PlayerController.CurHP, GamePlayManager.Instance.PlayerController.MaxHP);
                 break;
             case RewardType.ShieldReward:
                 GamePlayManager.Instance.PlayerController.MaxArmor += GamePlayManager.Instance.PlayerController.MaxArmor * reward.valueBuff;
-                GamePlayManager.Instance.PlayerController.CurArmor += GamePlayManager.Instance.PlayerController.MaxArmor * reward.valueBuff;
+                GamePlayManager.Instance.PlayerController.CurArmor += GamePlayManager.Instance.PlayerController.CurArmor * reward.valueBuff;
                 GameUIController.Instance?.UpdateShieldBar(GamePlayManager.Instance.PlayerController.CurArmor, GamePlayManager.Instance.PlayerController.MaxArmor);
                 break;
             case RewardType.AttackReward:

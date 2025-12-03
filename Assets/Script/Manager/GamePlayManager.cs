@@ -61,13 +61,16 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     private void Start()
     {
+        AudioManager.Instance.PlayMusicInGame();
         if (DataManager.Instance.GameData.IsFirstTimePlay)
         {
             ShowInstruction();
-            DataManager.Instance.GameData.IsFirstTimePlay = false;
+        }
+        else
+        {
+
+            StartNewGame();
         }    
-        AudioManager.Instance.PlayMusicInGame();
-        StartNewGame();
     }
 
     public void StartNewGame()
@@ -101,7 +104,6 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     public void StartNewWave()
     {
-        if (_isGamePaused || _isInstructionShown) return;
         _currentWave++;
         GameUIController.Instance.ShowWaveText(_currentWave);
         GameUIController.Instance.ShowWaveNotification();
@@ -160,6 +162,12 @@ public class GamePlayManager : Singleton<GamePlayManager>
 
     public void FinishInstruction()
     {
+        if (DataManager.Instance.GameData.IsFirstTimePlay)
+        {
+            DataManager.Instance.GameData.IsFirstTimePlay = false;
+            DataManager.Instance.GameData.Save();
+            StartNewGame();
+        }    
         AudioManager.Instance.PlayPopupSound();
         GameUIController.Instance.ShowInstruction(false);
         _isInstructionShown = false;

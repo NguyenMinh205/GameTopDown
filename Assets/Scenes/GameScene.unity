@@ -2662,7 +2662,7 @@ Transform:
   m_GameObject: {fileID: 481437099}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -40.5, y: -5, z: 0}
+  m_LocalPosition: {x: -39.5, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -69322,10 +69322,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectPool: {fileID: 1148736883}
   spawnGates:
-  - {fileID: 409614650}
-  - {fileID: 1390501150}
-  - {fileID: 1120926513}
-  - {fileID: 1440443}
+  - {fileID: 481437099}
+  - {fileID: 2068402025}
+  - {fileID: 2139051861}
+  - {fileID: 8236769}
   enemiesPrefabs:
   - {fileID: 4123941753907515527, guid: 8b914dd0af453af49a4e7569a9c546af, type: 3}
   - {fileID: 6487108115292012542, guid: 387724837e0ea0f42a7f4707bc59aefd, type: 3}
@@ -81564,7 +81564,7 @@ Transform:
   m_GameObject: {fileID: 2139051861}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40, y: -3, z: 0}
+  m_LocalPosition: {x: 39, y: -3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -127,7 +127,7 @@ Transform:
   m_GameObject: {fileID: 4768809516595199051}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.55, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -272,11 +272,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyType: 1
   _animator: {fileID: -6910182727419563531}
-  avoidanceAngle: 30
-  avoidanceDuration: 0.5
+  avoidanceAngle: 35
+  detectionDistance: 1
+  avoidanceSmoothing: 5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 384
+  numAvoidanceRays: 8
+  separationRadius: 1.5
+  separationWeight: 1
+  raycastInterval: 0.1
   barrel: {fileID: 4161252912722514684}
   bulletPrefab: {fileID: 8454693629353756433, guid: ac1f3478ed22bd4448edf3e9d33112f6, type: 3}
   attackRange: 7

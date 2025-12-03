@@ -21,13 +21,18 @@ public class EnemyBase : MonoBehaviour, IGetHit
     [SerializeField] private Animator _animator;
 
     [Header("Obstacle Avoidance Settings")]
-    [SerializeField] private float avoidanceAngle = 25f; // Góc xoay tránh (45 độ)
-    [SerializeField] private float avoidanceDuration = 0.5f; // Thời gian đi theo hướng tránh (0.5s)
-    [SerializeField] private LayerMask obstacleLayer; // Layer cho obstacle (border + enemy khác)
+    [SerializeField] private float avoidanceAngle = 25f;
+    [SerializeField] private float detectionDistance = 2f;
+    [SerializeField] private float avoidanceSmoothing = 8f;
+    [SerializeField] private LayerMask obstacleLayer;
+    [SerializeField] private int numAvoidanceRays = 7;
+    [SerializeField] private float separationRadius = 1.5f;
+    [SerializeField] private float separationWeight = 1f;
 
     private bool _isAvoiding = false;
-    private Vector2 _avoidanceDirection;
-    private Coroutine _avoidanceCoroutine;
+    private Vector2 _targetDirection;
+    private float _raycastTimer = 0f;
+    [SerializeField] private float raycastInterval = 0.1f;
 
     public virtual void Init(float hp, float armor, float dmpExplosion, float speed, float dmg, float rateOfFire, int coinVal)
     {
@@ -65,17 +70,63 @@ public class EnemyBase : MonoBehaviour, IGetHit
         }
 
         Vector2 toPlayer = (_player.position - transform.position).normalized;
+        _targetDirection = toPlayer;
 
-        if (_isAvoiding)
+        _raycastTimer += Time.deltaTime;
+        if (_raycastTimer >= raycastInterval)
         {
-            _movement = _avoidanceDirection;
+            _raycastTimer = 0f;
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, detectionDistance, obstacleLayer);
+            if (hit.collider != null && !_isAvoiding)
+            {
+                StartAvoidance(hit);
+            }
+
+            if (_isAvoiding)
+            {
+                if (!Physics2D.Raycast(transform.position, _targetDirection, detectionDistance, obstacleLayer))
+                {
+                    _isAvoiding = false;
+                }
+            }
+            else
+            {
+                _targetDirection = toPlayer;
+            }
         }
-        else
-        {
-            _movement = toPlayer;
-        }
+
+        Vector2 separationForce = CalculateSeparation();
+        _targetDirection += separationForce * separationWeight;
+        _targetDirection = _targetDirection.normalized;
+
+        _movement = Vector2.Lerp(_movement, _targetDirection, avoidanceSmoothing * Time.deltaTime);
 
         RotateTowards();
+    }
+
+    private Vector2 CalculateSeparation()
+    {
+        Vector2 steer = Vector2.zero;
+        int count = 0;
+
+        Collider2D[] neighbors = Physics2D.OverlapCircleAll(transform.position, separationRadius, obstacleLayer);
+        foreach (Collider2D neighbor in neighbors)
+        {
+            if (neighbor.gameObject != gameObject && neighbor.CompareTag("Enemy"))
+            {
+                Vector2 diff = transform.position - neighbor.transform.position;
+                steer += diff.normalized / diff.magnitude;
+                count++;
+            }
+        }
+
+        if (count > 0)
+        {
+            steer /= count;
+        }
+
+        return steer;
     }
 
     public void RotateTowards()
@@ -86,36 +137,51 @@ public class EnemyBase : MonoBehaviour, IGetHit
         this.transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (((1 << collision.gameObject.layer) & obstacleLayer) == 0 ||
-            collision.gameObject == gameObject ||
-            collision.gameObject.CompareTag("Player"))
-        {
-            return;
-        }
-
-        if (!_isAvoiding)
-        {
-            _avoidanceCoroutine = null;
-            _avoidanceCoroutine = StartCoroutine(AvoidanceCoroutine());
-        }
-    }
-
-    private IEnumerator AvoidanceCoroutine()
+    private void StartAvoidance(RaycastHit2D forwardHit)
     {
         _isAvoiding = true;
 
-        Vector2 forward = transform.up;
-        Vector2 toPlayer = (_player.position - transform.position).normalized;
-        float angleToPlayer = Vector2.SignedAngle(forward, toPlayer);
-        float rotationDirection = -Mathf.Sign(angleToPlayer);
+        Vector2 forward = transform.up.normalized;
+        Vector2 bestDir = forward;
+        float bestScore = float.MinValue;
 
-        _avoidanceDirection = Quaternion.Euler(0, 0, avoidanceAngle * rotationDirection) * forward.normalized;
+        int raySteps = (numAvoidanceRays - 1) / 2;
+        for (int i = -raySteps; i <= raySteps; i++)
+        {
+            Vector2 dir = Quaternion.Euler(0, 0, avoidanceAngle * i) * forward;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, detectionDistance * 2, obstacleLayer);
+            float distance = hit.collider ? hit.distance : Mathf.Infinity;
+            Vector2 toPlayer = (_player.position - transform.position).normalized;
+            float score = Vector2.Dot(dir, toPlayer) * 1.2f + (distance / (detectionDistance * 2));
+            if (score > bestScore)
+            {
+                bestScore = score;
+                bestDir = dir;
+            }
+        }
 
-        yield return new WaitForSeconds(avoidanceDuration);
+        // Thêm repulsion dựa trên normal của forward hit để đẩy mạnh hơn khỏi biên/tường
+        if (forwardHit.collider != null)
+        {
+            bestDir += forwardHit.normal * 0.8f; // Tăng lực đẩy để thoát kẹt nhanh hơn
+        }
 
-        _isAvoiding = false;
+        _targetDirection = bestDir.normalized;
+    }
+
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & obstacleLayer) != 0 && collision.gameObject != gameObject && !collision.gameObject.CompareTag("Player"))
+        {
+            if (!_isAvoiding)
+            {
+                // Lấy normal từ collision để đẩy ngay lập tức
+                Vector2 repulsion = collision.contacts[0].normal * 1f;
+                _targetDirection += repulsion;
+                _targetDirection.Normalize();
+                StartAvoidance(new RaycastHit2D()); // Gọi avoidance với empty hit
+            }
+        }
     }
 
     public void GetHit(float dmg)
@@ -137,11 +203,6 @@ public class EnemyBase : MonoBehaviour, IGetHit
     public void Die()
     {
         Debug.Log("Enemy die");
-        if (_avoidanceCoroutine != null)
-        {
-            StopCoroutine(_avoidanceCoroutine);
-            _avoidanceCoroutine = null;
-        }
         PoolingManager.Despawn(gameObject);
         AudioManager.Instance.PlayEnemyDieSound();
         GamePlayManager.Instance.SpawnExplosionTankAnim(transform.position);
